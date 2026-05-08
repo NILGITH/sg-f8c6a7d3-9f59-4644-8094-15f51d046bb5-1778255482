@@ -41,52 +41,53 @@ export function Program() {
 
   if (isLoading) {
     return (
-      <section id="program" className="py-20 bg-background">
+      <section id="program" className="py-16 md:py-20 lg:py-24 bg-background">
         <div className="container">
-          <div className="text-center">Chargement du programme...</div>
+          <div className="text-center text-foreground/70">Chargement du programme...</div>
         </div>
       </section>
     );
   }
 
   return (
-    <section id="program" className="py-20 bg-background">
+    <section id="program" className="py-16 md:py-20 lg:py-24 bg-background">
       <div className="container">
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground">
+        <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16 space-y-4 animate-fade-in">
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
             Programme du Festival
           </h2>
-          <p className="text-lg text-foreground/70">
+          <div className="w-20 h-1 bg-primary mx-auto" />
+          <p className="text-base md:text-lg text-foreground/70 px-4">
             Trois jours d'expériences culinaires, de compétitions passionnantes et de 
             célébrations autour de la grillade africaine
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {data.events.map((event) => {
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {data.events.map((event, index) => {
             const Icon = iconMap[event.icon] || ChefHat;
             return (
               <Card
                 key={event.id}
-                className={`${event.color} border-2 hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}
+                className={`${event.color} border-2 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer animate-scale-in stagger-${index + 1}`}
               >
                 <CardHeader>
                   <div className="flex items-start justify-between mb-4">
-                    <div className="p-3 bg-background rounded-lg shadow-sm">
-                      <Icon className="w-8 h-8 text-primary" />
+                    <div className="p-3 bg-background rounded-lg shadow-sm hover:scale-110 transition-transform duration-300">
+                      <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary" />
                     </div>
-                    <Badge variant="secondary" className="font-semibold">
+                    <Badge variant="secondary" className="font-semibold text-xs md:text-sm">
                       {event.badge}
                     </Badge>
                   </div>
-                  <CardTitle className="font-serif text-2xl">{event.title}</CardTitle>
+                  <CardTitle className="font-serif text-xl md:text-2xl">{event.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center gap-2 text-foreground/70">
-                    <Clock className="w-4 h-4" />
-                    <span className="font-semibold">{event.time}</span>
+                    <Clock className="w-4 h-4 flex-shrink-0" />
+                    <span className="font-semibold text-sm md:text-base">{event.time}</span>
                   </div>
-                  <p className="text-foreground/80 leading-relaxed">
+                  <p className="text-sm md:text-base text-foreground/80 leading-relaxed">
                     {event.description}
                   </p>
                 </CardContent>
@@ -95,11 +96,11 @@ export function Program() {
           })}
         </div>
 
-        <div className="mt-16 p-8 bg-muted/50 rounded-2xl border border-border text-center">
-          <h3 className="font-serif text-2xl font-bold text-foreground mb-4">
+        <div className="mt-12 md:mt-16 p-6 md:p-8 bg-muted/50 rounded-2xl border border-border text-center animate-slide-up stagger-4">
+          <h3 className="font-serif text-xl md:text-2xl font-bold text-foreground mb-4">
             Programme Complet Disponible
           </h3>
-          <p className="text-foreground/70 mb-6 max-w-2xl mx-auto">
+          <p className="text-sm md:text-base text-foreground/70 mb-6 max-w-2xl mx-auto px-4">
             Téléchargez le programme détaillé avec tous les horaires, participants et activités 
             pour ne rien manquer du festival
           </p>
@@ -111,13 +112,18 @@ export function Program() {
                 link.download = "programme-festival-grillades.pdf";
                 link.click();
               }}
-              className="bg-primary hover:bg-primary/90"
+              className="bg-primary hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+              size="lg"
             >
               <Download className="w-4 h-4 mr-2" />
               Télécharger le programme PDF
             </Button>
           ) : (
-            <Button className="bg-primary hover:bg-primary/90" disabled>
+            <Button 
+              className="bg-primary hover:bg-primary/90" 
+              disabled 
+              size="lg"
+            >
               Programme PDF bientôt disponible
             </Button>
           )}
