@@ -5,24 +5,28 @@
       "name": "Orange Côte d'Ivoire",
       "logo": "/festival-poster.png",
       "website": "https://www.orange.ci",
-      "category": "sponsor",
-      "featured": true
+      "category": "principal"
     },
     {
       "id": "2",
       "name": "MTN CI",
       "logo": "/festival-menu.png",
       "website": "https://www.mtn.ci",
-      "category": "sponsor",
-      "featured": true
+      "category": "principal"
     },
     {
       "id": "3",
       "name": "Solibra",
       "logo": "/festival-info.png",
       "website": "#",
-      "category": "sponsor",
-      "featured": false
+      "category": "support"
+    },
+    {
+      "id": "4",
+      "name": "Ministère du Tourisme",
+      "logo": "/festival-poster.png",
+      "website": "#",
+      "category": "support"
     }
   ]
 }

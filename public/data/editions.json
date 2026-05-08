@@ -1,0 +1,34 @@
+{
+  "editions": [
+    {
+      "id": "1",
+      "city": "Abidjan",
+      "country": "Côte d'Ivoire",
+      "date": "2026-12-15",
+      "status": "upcoming",
+      "description": "Édition inaugurale dans la ville d'origine du festival. Trois jours de célébration des grillades ouest-africaines.",
+      "image": "/generated/hero-festival.png",
+      "isOrigin": true
+    },
+    {
+      "id": "2",
+      "city": "Dakar",
+      "country": "Sénégal",
+      "date": "2027-03-20",
+      "status": "upcoming",
+      "description": "Le festival s'installe à Dakar pour célébrer les traditions culinaires sénégalaises.",
+      "image": "/641655009_122170459016861582_5624134569926200889_n.jpg",
+      "isOrigin": false
+    },
+    {
+      "id": "3",
+      "city": "Cotonou",
+      "country": "Bénin",
+      "date": "2027-06-10",
+      "status": "upcoming",
+      "description": "Découverte des saveurs béninoises dans une atmosphère festive.",
+      "image": "/641501809_122170458476861582_102146802286182265_n.jpg",
+      "isOrigin": false
+    }
+  ]
+}

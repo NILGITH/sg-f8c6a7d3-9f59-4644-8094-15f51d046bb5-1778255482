@@ -4,7 +4,7 @@ import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Edit, Trash2, Save, Download, Upload, X, Building2 } from "lucide-react";
+import { Plus, Edit, Trash2, Save, Download, Upload, X, Building2, Award, Users } from "lucide-react";
 import { useContentManager } from "@/hooks/useContentManager";
 import { SEO } from "@/components/SEO";
 import Image from "next/image";
@@ -14,8 +14,7 @@ interface Partner {
   name: string;
   logo: string;
   website: string;
-  category: string;
-  featured: boolean;
+  category: "principal" | "support";
 }
 
 interface PartnersData {
@@ -45,8 +44,7 @@ export default function AdminPartners() {
       name: "",
       logo: "",
       website: "",
-      category: "sponsor",
-      featured: false,
+      category: "support",
     };
     setEditingPartner(newPartner);
     setIsAdding(true);
@@ -126,6 +124,9 @@ export default function AdminPartners() {
     }
   };
 
+  const principalPartners = data.partners.filter((p) => p.category === "principal");
+  const supportPartners = data.partners.filter((p) => p.category === "support");
+
   return (
     <>
       <SEO title="Gestion des Partenaires - Admin" />
@@ -137,7 +138,7 @@ export default function AdminPartners() {
                 Gestion des Partenaires
               </h1>
               <p className="text-foreground/70">
-                Gérer les logos et informations des partenaires
+                Gérer les logos et catégories des partenaires
               </p>
             </div>
             <div className="flex gap-2">
@@ -159,6 +160,36 @@ export default function AdminPartners() {
                 Ajouter partenaire
               </Button>
             </div>
+          </div>
+
+          {/* Stats */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-primary/10 rounded-lg">
+                    <Award className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold">{principalPartners.length}</p>
+                    <p className="text-sm text-foreground/70">Partenaires Principaux</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-secondary/10 rounded-lg">
+                    <Users className="w-6 h-6 text-secondary" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold">{supportPartners.length}</p>
+                    <p className="text-sm text-foreground/70">Avec le soutien de</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Edit/Add Form */}
@@ -262,35 +293,35 @@ export default function AdminPartners() {
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium">Catégorie</label>
-                    <select
-                      value={editingPartner.category}
-                      onChange={(e) =>
-                        setEditingPartner({ ...editingPartner, category: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-input rounded-md"
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Catégorie *</label>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <button
+                      type="button"
+                      onClick={() => setEditingPartner({ ...editingPartner, category: "principal" })}
+                      className={`p-4 border-2 rounded-lg transition-all ${
+                        editingPartner.category === "principal"
+                          ? "border-primary bg-primary/5"
+                          : "border-border hover:border-primary/50"
+                      }`}
                     >
-                      <option value="sponsor">Sponsor</option>
-                      <option value="media">Média</option>
-                      <option value="institutional">Institutionnel</option>
-                      <option value="supplier">Fournisseur</option>
-                    </select>
-                  </div>
-                  <div className="flex items-center gap-2 pt-6">
-                    <input
-                      type="checkbox"
-                      id="featured"
-                      checked={editingPartner.featured}
-                      onChange={(e) =>
-                        setEditingPartner({ ...editingPartner, featured: e.target.checked })
-                      }
-                      className="w-4 h-4"
-                    />
-                    <label htmlFor="featured" className="text-sm font-medium">
-                      Partenaire principal (affiché en grand)
-                    </label>
+                      <Award className="w-6 h-6 mx-auto mb-2 text-primary" />
+                      <p className="font-semibold">Partenaire Principal</p>
+                      <p className="text-xs text-foreground/60 mt-1">Logo grand, mise en avant</p>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setEditingPartner({ ...editingPartner, category: "support" })}
+                      className={`p-4 border-2 rounded-lg transition-all ${
+                        editingPartner.category === "support"
+                          ? "border-primary bg-primary/5"
+                          : "border-border hover:border-primary/50"
+                      }`}
+                    >
+                      <Users className="w-6 h-6 mx-auto mb-2 text-secondary" />
+                      <p className="font-semibold">Avec le soutien de</p>
+                      <p className="text-xs text-foreground/60 mt-1">Logo petit, grille</p>
+                    </button>
                   </div>
                 </div>
 
@@ -308,23 +339,23 @@ export default function AdminPartners() {
             </Card>
           )}
 
-          {/* Partners List */}
+          {/* Partenaires Principaux */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-foreground">
-              Partenaires ({data.partners.length})
+            <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <Award className="w-5 h-5 text-primary" />
+              Partenaires Principaux ({principalPartners.length})
             </h3>
 
-            {data.partners.length === 0 ? (
+            {principalPartners.length === 0 ? (
               <Card>
-                <CardContent className="text-center py-12 text-foreground/50">
-                  <Building2 className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p>Aucun partenaire ajouté</p>
+                <CardContent className="text-center py-8 text-foreground/50">
+                  <p className="text-sm">Aucun partenaire principal</p>
                 </CardContent>
               </Card>
             ) : (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {data.partners.map((partner) => (
-                  <Card key={partner.id} className={partner.featured ? "border-2 border-primary" : ""}>
+                {principalPartners.map((partner) => (
+                  <Card key={partner.id} className="border-2 border-primary/30">
                     <CardContent className="p-4 space-y-4">
                       <div className="relative aspect-video bg-muted rounded-lg overflow-hidden">
                         <Image
@@ -335,15 +366,8 @@ export default function AdminPartners() {
                         />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-foreground flex items-center gap-2">
-                          {partner.name}
-                          {partner.featured && (
-                            <span className="text-xs bg-primary text-white px-2 py-0.5 rounded-full">
-                              Principal
-                            </span>
-                          )}
-                        </h4>
-                        <p className="text-sm text-foreground/60 capitalize">{partner.category}</p>
+                        <h4 className="font-semibold text-foreground">{partner.name}</h4>
+                        <p className="text-sm text-primary">Partenaire Principal</p>
                       </div>
                       <div className="flex gap-2">
                         <Button
@@ -361,6 +385,58 @@ export default function AdminPartners() {
                           onClick={() => handleDeletePartner(partner.id)}
                         >
                           <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Avec le soutien de */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <Users className="w-5 h-5 text-secondary" />
+              Avec le soutien de ({supportPartners.length})
+            </h3>
+
+            {supportPartners.length === 0 ? (
+              <Card>
+                <CardContent className="text-center py-8 text-foreground/50">
+                  <p className="text-sm">Aucun partenaire de soutien</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {supportPartners.map((partner) => (
+                  <Card key={partner.id}>
+                    <CardContent className="p-3 space-y-3">
+                      <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
+                        <Image
+                          src={partner.logo}
+                          alt={partner.name}
+                          fill
+                          className="object-contain p-2"
+                        />
+                      </div>
+                      <p className="text-xs font-medium text-center truncate">{partner.name}</p>
+                      <div className="flex gap-1">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex-1 h-8 text-xs"
+                          onClick={() => handleEditPartner(partner)}
+                        >
+                          <Edit className="w-3 h-3" />
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          className="h-8"
+                          onClick={() => handleDeletePartner(partner.id)}
+                        >
+                          <Trash2 className="w-3 h-3" />
                         </Button>
                       </div>
                     </CardContent>

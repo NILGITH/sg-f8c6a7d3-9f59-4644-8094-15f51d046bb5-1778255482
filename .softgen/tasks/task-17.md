@@ -1,6 +1,6 @@
 ---
 title: Diviser Partenaires en deux catégories
-status: todo
+status: done
 priority: high
 type: feature
 tags: [partners, frontend]
@@ -13,10 +13,10 @@ position: 7
 Refondre la section Partenaires pour avoir deux catégories distinctes : "Partenaires Principaux" (grands logos, mise en avant) et "Avec le soutien de" (logos plus petits, grille).
 
 ## Checklist
-- [ ] Mettre à jour src/components/Partners.tsx avec deux sections
-- [ ] Ajouter champ "category" dans partners.json (principal/support)
-- [ ] Design différencié: grands logos pour principaux, petits pour support
-- [ ] Mettre à jour admin partners pour gérer la catégorie
+- [x] Mettre à jour src/components/Partners.tsx avec deux sections
+- [x] Ajouter champ "category" dans partners.json (principal/support)
+- [x] Design différencié: grands logos pour principaux, petits pour support
+- [x] Mettre à jour admin partners pour gérer la catégorie
 
 ## Acceptance
 - Deux sections visibles : "Partenaires Principaux" et "Avec le soutien de"

@@ -10,8 +10,7 @@ interface Partner {
   name: string;
   logo: string;
   website: string;
-  category: string;
-  featured: boolean;
+  category: "principal" | "support";
 }
 
 interface PartnersData {
@@ -31,11 +30,8 @@ export function Partners() {
     );
   }
 
-  const featuredPartners = data.partners.filter((p) => p.featured);
-  const regularPartners = data.partners.filter((p) => !p.featured);
-
-  // Duplicate partners for infinite scroll effect
-  const duplicatedPartners = [...regularPartners, ...regularPartners, ...regularPartners];
+  const principalPartners = data.partners.filter((p) => p.category === "principal");
+  const supportPartners = data.partners.filter((p) => p.category === "support");
 
   if (data.partners.length === 0) {
     return null;
@@ -60,24 +56,24 @@ export function Partners() {
             Ils Nous Font Confiance
           </h2>
           <p className="text-base md:text-lg text-foreground/70 px-4">
-            Ils contribuent au succès du Festival des Grillades d'Abidjan et partagent notre passion pour la culture culinaire
+            Ensemble, nous célébrons la culture culinaire des grillades à travers le monde
           </p>
         </div>
 
-        {/* Featured Partners */}
-        {featuredPartners.length > 0 && (
-          <div className="mb-16 md:mb-20">
-            <h3 className="text-center font-serif text-2xl md:text-3xl font-bold text-foreground mb-8 md:mb-12">
+        {/* Partenaires Principaux */}
+        {principalPartners.length > 0 && (
+          <div className="mb-20">
+            <h3 className="text-center font-serif text-2xl md:text-3xl font-bold text-foreground mb-10">
               Partenaires Principaux
             </h3>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
-              {featuredPartners.map((partner, index) => (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              {principalPartners.map((partner, index) => (
                 <a
                   key={partner.id}
                   href={partner.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`group relative p-8 md:p-10 bg-background rounded-2xl border-2 border-border hover:border-primary transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 animate-scale-in stagger-${index + 1}`}
+                  className={`group relative p-10 bg-background rounded-2xl border-2 border-border hover:border-primary transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 animate-scale-in stagger-${index + 1}`}
                 >
                   {/* Logo Container */}
                   <div className="relative aspect-video mb-6">
@@ -110,8 +106,8 @@ export function Partners() {
           </div>
         )}
 
-        {/* Regular Partners - Infinite Scroll */}
-        {regularPartners.length > 0 && (
+        {/* Avec le soutien de */}
+        {supportPartners.length > 0 && (
           <div className="relative">
             {/* Divider */}
             <div className="flex items-center gap-4 mb-12 max-w-4xl mx-auto">
@@ -122,58 +118,44 @@ export function Partners() {
               <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
             </div>
 
-            {/* Scrolling Container */}
-            <div className="scroll-container relative overflow-hidden py-4">
-              {/* Gradient Edges */}
-              <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-              <div className="absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-
-              {/* Scrolling Track */}
-              <div className="flex gap-8 md:gap-12 animate-scroll">
-                {duplicatedPartners.map((partner, index) => (
-                  <a
-                    key={`${partner.id}-${index}`}
-                    href={partner.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group relative flex-shrink-0 w-40 md:w-48 h-24 md:h-28 p-6 bg-background/50 backdrop-blur-sm rounded-xl border border-border/50 hover:border-primary/50 hover:bg-background transition-all duration-300 hover:shadow-lg hover:scale-105"
-                  >
-                    <div className="relative w-full h-full">
-                      <Image
-                        src={partner.logo}
-                        alt={partner.name}
-                        fill
-                        className="object-contain transition-all duration-300 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100"
-                      />
-                    </div>
-                    
-                    {/* Tooltip on hover */}
-                    <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-foreground text-background text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none z-20">
-                      {partner.name}
-                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-foreground rotate-45" />
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Scroll Hint */}
-            <div className="text-center mt-8">
-              <p className="text-xs text-foreground/50">
-                Survolez pour mettre en pause • {regularPartners.length} partenaire{regularPartners.length > 1 ? "s" : ""}
-              </p>
+            {/* Grid Layout */}
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
+              {supportPartners.map((partner) => (
+                <a
+                  key={partner.id}
+                  href={partner.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative aspect-square p-4 bg-background/50 backdrop-blur-sm rounded-xl border border-border/50 hover:border-primary/50 hover:bg-background transition-all duration-300 hover:shadow-lg hover:scale-105"
+                >
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={partner.logo}
+                      alt={partner.name}
+                      fill
+                      className="object-contain transition-all duration-300 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100"
+                    />
+                  </div>
+                  
+                  {/* Tooltip on hover */}
+                  <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-foreground text-background text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none z-20">
+                    {partner.name}
+                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-foreground rotate-45" />
+                  </div>
+                </a>
+              ))}
             </div>
           </div>
         )}
 
         {/* CTA */}
-        <div className="mt-16 md:mt-20 text-center animate-slide-up">
+        <div className="mt-20 text-center animate-slide-up">
           <div className="inline-block p-8 md:p-10 bg-gradient-to-br from-primary/5 via-background to-secondary/5 rounded-2xl border-2 border-primary/20">
             <h3 className="font-serif text-xl md:text-2xl font-bold text-foreground mb-3">
               Devenez Partenaire
             </h3>
             <p className="text-foreground/70 mb-6 max-w-md">
-              Rejoignez nos partenaires et participez à la promotion de la culture culinaire ivoirienne
+              Rejoignez nos partenaires et participez à la célébration de la culture culinaire des grillades
             </p>
             <Link
               href="/contact"
