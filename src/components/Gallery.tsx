@@ -1,33 +1,31 @@
+"use client";
+
 import Image from "next/image";
+import { useContentManager } from "@/hooks/useContentManager";
+
+interface GalleryImage {
+  id: string;
+  src: string;
+  alt: string;
+  span: string;
+}
+
+interface GalleryData {
+  images: GalleryImage[];
+}
 
 export function Gallery() {
-  const images = [
-    {
-      src: "/festival-poster.png",
-      alt: "Affiche du Festival des Grillades",
-      span: "col-span-2 row-span-2",
-    },
-    {
-      src: "/festival-menu.png",
-      alt: "Menu du festival",
-      span: "col-span-1 row-span-1",
-    },
-    {
-      src: "/festival-info.png",
-      alt: "Informations pratiques",
-      span: "col-span-1 row-span-1",
-    },
-    {
-      src: "/641655009_122170459016861582_5624134569926200889_n.jpg",
-      alt: "Ambiance festival",
-      span: "col-span-1 row-span-1",
-    },
-    {
-      src: "/641501809_122170458476861582_102146802286182265_n.jpg",
-      alt: "Grillades festival",
-      span: "col-span-1 row-span-1",
-    },
-  ];
+  const { data, isLoading } = useContentManager<GalleryData>("gallery", { images: [] });
+
+  if (isLoading) {
+    return (
+      <section className="py-20 bg-background">
+        <div className="container">
+          <div className="text-center">Chargement de la galerie...</div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-20 bg-background">
@@ -42,9 +40,9 @@ export function Gallery() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
-          {images.map((image, index) => (
+          {data.images.map((image) => (
             <div
-              key={index}
+              key={image.id}
               className={`${image.span} relative overflow-hidden rounded-xl group cursor-pointer`}
             >
               <div className="relative aspect-square">

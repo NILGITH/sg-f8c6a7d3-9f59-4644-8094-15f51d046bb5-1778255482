@@ -1,34 +1,47 @@
+"use client";
+
 import { Clock, ChefHat, Music, Trophy } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useContentManager } from "@/hooks/useContentManager";
+
+interface ProgramEvent {
+  id: string;
+  title: string;
+  description: string;
+  time: string;
+  badge: string;
+  icon: string;
+  color: string;
+}
+
+interface ProgramData {
+  events: ProgramEvent[];
+  festivalInfo: {
+    dates: string;
+    location: string;
+    city: string;
+  };
+}
+
+const iconMap: Record<string, typeof ChefHat> = {
+  ChefHat,
+  Music,
+  Trophy,
+};
 
 export function Program() {
-  const events = [
-    {
-      icon: ChefHat,
-      title: "Démonstrations Culinaires",
-      time: "10h - 18h",
-      description: "Assistez aux démonstrations des plus grands chefs grilleurs d'Abidjan qui partagent leurs secrets et techniques ancestrales.",
-      badge: "Tous les jours",
-      color: "bg-primary/10 border-primary/20",
-    },
-    {
-      icon: Trophy,
-      title: "Grand Concours de Grillades",
-      time: "14h - 17h",
-      description: "Compétition entre les meilleurs grilleurs pour remporter le titre du Maître Grilleur 2026. Jury professionnel et vote du public.",
-      badge: "Dimanche 17 Août",
-      color: "bg-secondary/10 border-secondary/20",
-    },
-    {
-      icon: Music,
-      title: "Concerts & Animations",
-      time: "18h - 23h",
-      description: "Ambiance musicale avec des artistes locaux, DJ sets, danse traditionnelle et spectacles pyrotechniques pour clôturer chaque soirée.",
-      badge: "Soirées",
-      color: "bg-accent/10 border-accent/20",
-    },
-  ];
+  const { data, isLoading } = useContentManager<ProgramData>("program", { events: [], festivalInfo: { dates: "", location: "", city: "" } });
+
+  if (isLoading) {
+    return (
+      <section id="program" className="py-20 bg-background">
+        <div className="container">
+          <div className="text-center">Chargement du programme...</div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="program" className="py-20 bg-background">
@@ -44,11 +57,11 @@ export function Program() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {events.map((event, index) => {
-            const Icon = event.icon;
+          {data.events.map((event) => {
+            const Icon = iconMap[event.icon] || ChefHat;
             return (
               <Card
-                key={index}
+                key={event.id}
                 className={`${event.color} border-2 hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}
               >
                 <CardHeader>

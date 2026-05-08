@@ -1,6 +1,6 @@
 ---
 title: Système de données JSON + localStorage
-status: in_progress
+status: done
 priority: urgent
 type: feature
 tags: [data, admin]
@@ -15,8 +15,8 @@ Créer la structure de données avec fichiers JSON initiaux dans `/data/` et hoo
 ## Checklist
 - [x] Créer structure JSON pour programme, galerie, réservations, blog
 - [x] Créer hooks useLocalStorage et useContentManager
-- [ ] Créer système d'export/import JSON
-- [ ] Mettre à jour composants publics pour utiliser les données du système
+- [x] Créer système d'export/import JSON
+- [x] Mettre à jour composants publics pour utiliser les données du système
 
 ## Acceptance
 - Les composants publics affichent les données depuis le système

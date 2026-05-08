@@ -1,6 +1,6 @@
 ---
 title: Interface Admin - Dashboard & Auth
-status: todo
+status: in_progress
 priority: high
 type: feature
 tags: [admin, auth]
@@ -13,10 +13,10 @@ position: 5
 Créer page admin principale avec authentification simple (localStorage), layout admin, navigation entre sections, et dashboard avec statistiques. Authentification basique avec mot de passe stocké en localStorage.
 
 ## Checklist
-- [ ] Créer page /admin/login avec formulaire simple
-- [ ] Créer layout admin avec navigation sidebar
-- [ ] Créer dashboard avec stats et aperçu
-- [ ] Protéger routes admin avec guard
+- [x] Créer page /admin/login avec formulaire simple
+- [x] Créer layout admin avec navigation sidebar
+- [x] Créer dashboard avec stats et aperçu
+- [x] Protéger routes admin avec guard
 
 ## Acceptance
 - Accès admin protégé par login
