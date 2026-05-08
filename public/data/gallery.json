@@ -1,0 +1,34 @@
+{
+  "images": [
+    {
+      "id": "1",
+      "src": "/festival-poster.png",
+      "alt": "Affiche du Festival des Grillades",
+      "span": "col-span-2 row-span-2"
+    },
+    {
+      "id": "2",
+      "src": "/festival-menu.png",
+      "alt": "Menu du festival",
+      "span": "col-span-1 row-span-1"
+    },
+    {
+      "id": "3",
+      "src": "/festival-info.png",
+      "alt": "Informations pratiques",
+      "span": "col-span-1 row-span-1"
+    },
+    {
+      "id": "4",
+      "src": "/641655009_122170459016861582_5624134569926200889_n.jpg",
+      "alt": "Ambiance festival",
+      "span": "col-span-1 row-span-1"
+    },
+    {
+      "id": "5",
+      "src": "/641501809_122170458476861582_102146802286182265_n.jpg",
+      "alt": "Grillades festival",
+      "span": "col-span-1 row-span-1"
+    }
+  ]
+}

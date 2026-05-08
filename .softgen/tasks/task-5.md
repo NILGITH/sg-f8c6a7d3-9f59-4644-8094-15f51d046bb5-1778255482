@@ -1,6 +1,6 @@
 ---
 title: Interface Admin - Dashboard & Auth
-status: in_progress
+status: done
 priority: high
 type: feature
 tags: [admin, auth]
@@ -17,8 +17,10 @@ Créer page admin principale avec authentification simple (localStorage), layout
 - [x] Créer layout admin avec navigation sidebar
 - [x] Créer dashboard avec stats et aperçu
 - [x] Protéger routes admin avec guard
+- [x] Fixer erreurs 404 des fichiers JSON (déplacés vers public/data/)
 
 ## Acceptance
-- Accès admin protégé par login
+- Accès admin protégé par login (mot de passe: admin2026)
 - Dashboard affiche statistiques du festival
 - Navigation fluide entre sections admin
+- Données JSON chargées correctement

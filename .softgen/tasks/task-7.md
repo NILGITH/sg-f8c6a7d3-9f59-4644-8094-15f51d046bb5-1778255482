@@ -1,25 +1,24 @@
 ---
 title: Admin - Réservations & Blog
-status: todo
+status: in_progress
 priority: high
 type: feature
-tags: [admin, reservations, blog]
+tags: [admin, blog]
 created_by: agent
 created_at: 2026-05-08T15:52:00Z
 position: 7
 ---
 
 ## Notes
-Pages admin pour gérer les réservations de billets (suivi commandes) et articles de blog (CRUD avec éditeur markdown). Formulaires complets avec validation.
+Créer pages admin pour gérer les réservations de billets et le blog. Interface de suivi des réservations avec filtres, et éditeur de blog complet pour créer/éditer/publier des articles.
 
 ## Checklist
-- [ ] Page /admin/reservations avec tableau des commandes
-- [ ] Détails réservation et changement de statut
-- [ ] Page /admin/blog avec liste articles
-- [ ] Éditeur d'article avec markdown et preview
-- [ ] Création page blog publique /blog et /blog/[slug]
+- [x] Créer page /admin/reservations avec gestion statuts
+- [ ] Créer page /admin/blog avec CRUD articles
+- [ ] Créer page publique /blog avec listing des articles
+- [ ] Créer page publique /blog/[slug] pour les articles
 
 ## Acceptance
-- Admin peut voir et gérer toutes les réservations
+- Admin peut gérer les réservations
 - Admin peut créer/éditer/publier des articles de blog
 - Articles publiés visibles sur /blog

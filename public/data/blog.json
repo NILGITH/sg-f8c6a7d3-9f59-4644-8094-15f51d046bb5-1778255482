@@ -1,0 +1,28 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "slug": "les-secrets-du-parfait-atieke-poisson",
+      "title": "Les Secrets du Parfait Attiéké-Poisson Braisé",
+      "excerpt": "Découvrez les techniques ancestrales pour réussir le plat emblématique de la Côte d'Ivoire.",
+      "content": "L'attiéké-poisson braisé est bien plus qu'un simple plat. C'est un symbole de la culture ivoirienne...\n\n## Les ingrédients essentiels\n\n- Attiéké frais\n- Poisson (thon ou daurade)\n- Tomates fraîches\n- Oignons\n- Piment\n\n## La technique de braisage\n\nLe secret réside dans la maîtrise du feu...",
+      "featuredImage": "/generated/blog-spices.png",
+      "author": "Chef Kouamé",
+      "publishedAt": "2026-04-15T10:00:00Z",
+      "status": "published",
+      "tags": ["recettes", "tradition", "attiéké"]
+    },
+    {
+      "id": "2",
+      "slug": "histoire-grillades-ouest-africaines",
+      "title": "Histoire des Grillades en Afrique de l'Ouest",
+      "excerpt": "Un voyage à travers le temps pour comprendre l'origine de nos traditions culinaires autour du feu.",
+      "content": "Les grillades font partie intégrante de la culture ouest-africaine depuis des millénaires...",
+      "featuredImage": "/generated/about-grilling.png",
+      "author": "Dr. Traoré",
+      "publishedAt": "2026-04-20T14:30:00Z",
+      "status": "published",
+      "tags": ["histoire", "culture", "tradition"]
+    }
+  ]
+}
