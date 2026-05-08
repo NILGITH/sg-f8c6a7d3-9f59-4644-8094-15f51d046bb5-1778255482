@@ -14,12 +14,12 @@ Build festival homepage with hero section, about the festival, program highlight
 
 ## Checklist
 - [x] Setup design system (globals.css, tailwind.config.ts, fonts)
-- [ ] Create Navigation component with logo and menu links
-- [ ] Create Hero section with festival title, dates, location, CTA
-- [ ] Create About section explaining the festival
-- [ ] Create Program highlights section with 3-4 event cards
-- [ ] Create CTA section for ticket purchase
-- [ ] Create Footer with social links and contact info
+- [x] Create Navigation component with logo and menu links
+- [x] Create Hero section with festival title, dates, location, CTA
+- [x] Create About section explaining the festival
+- [x] Create Program highlights section with 3-4 event cards
+- [x] Create CTA section for ticket purchase
+- [x] Create Footer with social links and contact info
 
 ## Acceptance
 - Homepage loads with complete festival information

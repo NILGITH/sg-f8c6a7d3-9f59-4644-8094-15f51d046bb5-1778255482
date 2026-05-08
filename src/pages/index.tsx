@@ -1,12 +1,27 @@
-import React from 'react'
+import { SEO } from "@/components/SEO";
+import { Navigation } from "@/components/Navigation";
+import { Hero } from "@/components/Hero";
+import { About } from "@/components/About";
+import { Program } from "@/components/Program";
+import { CTA } from "@/components/CTA";
+import { Footer } from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background flex items-center justify-center">
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-foreground">Hello World</h1>
-        <p className="text-lg text-muted-foreground">This is going to be your softgen app, start by describing your project.</p>
-      </div>
-    </main>
-  )
+    <>
+      <SEO
+        title="Festival des Grillades d'Abidjan 2026 | 15-17 Août"
+        description="Célébrez la culture culinaire ouest-africaine lors du plus grand festival de grillades à Abidjan. 3 jours d'expériences gastronomiques, concerts et compétitions."
+        image="/generated/hero-festival.png"
+      />
+      <Navigation />
+      <main>
+        <Hero />
+        <About />
+        <Program />
+        <CTA />
+      </main>
+      <Footer />
+    </>
+  );
 }
