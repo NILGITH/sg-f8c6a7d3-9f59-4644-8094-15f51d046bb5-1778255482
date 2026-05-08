@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useContentManager } from "@/hooks/useContentManager";
 import { ExternalLink } from "lucide-react";
 
@@ -157,13 +158,13 @@ export function Partners() {
             <p className="text-foreground/70 mb-6 max-w-md">
               Rejoignez nos partenaires et participez à la promotion de la culture culinaire ivoirienne
             </p>
-            <a
+            <Link
               href="/contact"
               className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
             >
               Nous Contacter
               <ExternalLink className="w-4 h-4" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>
