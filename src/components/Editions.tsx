@@ -1,98 +1,66 @@
+"use client";
+
 import Image from "next/image";
 import { MapPin, Calendar, ArrowRight, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useContentManager } from "@/hooks/useContentManager";
 
 interface Edition {
+  id: string;
   city: string;
   country: string;
   date: string;
-  status: "upcoming" | "past" | "origin";
-  image: string;
+  status: "upcoming" | "past";
   description: string;
-  year: string;
+  image: string;
+  isOrigin: boolean;
+}
+
+interface EditionsData {
+  editions: Edition[];
 }
 
 export function Editions() {
-  const editions: Edition[] = [
-    {
-      city: "Abidjan",
-      country: "Côte d'Ivoire",
-      date: "15-17 Août 2026",
-      status: "origin",
-      image: "/641655009_122170459016861582_5624134569926200889_n.jpg",
-      description: "La maison mère du festival, où tout a commencé",
-      year: "2026",
-    },
-    {
-      city: "Dakar",
-      country: "Sénégal",
-      date: "10-12 Septembre 2026",
-      status: "upcoming",
-      image: "/641501809_122170458476861582_102146802286182265_n.jpg",
-      description: "Découvrez les grillades sénégalaises au bord de l'Atlantique",
-      year: "2026",
-    },
-    {
-      city: "Cotonou",
-      country: "Bénin",
-      date: "5-7 Octobre 2026",
-      status: "upcoming",
-      image: "/festival-poster.png",
-      description: "La tradition béninoise à l'honneur",
-      year: "2026",
-    },
-    {
-      city: "Lagos",
-      country: "Nigeria",
-      date: "15-17 Novembre 2026",
-      status: "upcoming",
-      image: "/festival-menu.png",
-      description: "L'énergie nigériane rencontre la tradition des grillades",
-      year: "2026",
-    },
-    {
-      city: "Accra",
-      country: "Ghana",
-      date: "10-12 Décembre 2026",
-      status: "upcoming",
-      image: "/festival-info.png",
-      description: "Célébration ghanéenne de la cuisine de rue",
-      year: "2026",
-    },
-    {
-      city: "Paris",
-      country: "France",
-      date: "Mars 2027",
-      status: "upcoming",
-      image: "/generated/hero-festival.png",
-      description: "Première édition européenne du festival",
-      year: "2027",
-    },
-  ];
+  const { data, isLoading } = useContentManager<EditionsData>("editions", { editions: [] });
 
-  const getStatusBadge = (status: Edition["status"]) => {
-    switch (status) {
-      case "origin":
-        return (
-          <Badge className="bg-primary text-white border-none">
-            <Flame className="w-3 h-3 mr-1" />
-            Maison Mère
-          </Badge>
-        );
-      case "upcoming":
-        return (
-          <Badge variant="secondary" className="bg-accent/20 text-accent border-accent/30">
-            À venir
-          </Badge>
-        );
-      case "past":
-        return (
-          <Badge variant="outline" className="text-foreground/60">
-            Édition passée
-          </Badge>
-        );
+  if (isLoading) {
+    return (
+      <section className="py-16 md:py-20 lg:py-24 bg-background">
+        <div className="container">
+          <div className="text-center text-foreground/70">Chargement des éditions...</div>
+        </div>
+      </section>
+    );
+  }
+
+  if (data.editions.length === 0) {
+    return null;
+  }
+
+  const getStatusBadge = (edition: Edition) => {
+    if (edition.isOrigin) {
+      return (
+        <Badge className="bg-primary text-white border-none">
+          <Flame className="w-3 h-3 mr-1" />
+          Maison Mère
+        </Badge>
+      );
     }
+    
+    if (edition.status === "upcoming") {
+      return (
+        <Badge variant="secondary" className="bg-accent/20 text-accent border-accent/30">
+          À venir
+        </Badge>
+      );
+    }
+    
+    return (
+      <Badge variant="outline" className="text-foreground/60">
+        Édition passée
+      </Badge>
+    );
   };
 
   return (
@@ -112,16 +80,16 @@ export function Editions() {
 
           {/* Editions Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {editions.map((edition, index) => (
+            {data.editions.map((edition, index) => (
               <div
-                key={`${edition.city}-${edition.year}`}
+                key={edition.id}
                 className={`group relative bg-background rounded-2xl border-2 border-border hover:border-primary transition-all duration-300 overflow-hidden hover:shadow-2xl hover:-translate-y-2 animate-scale-in stagger-${(index % 3) + 1}`}
               >
                 {/* Image */}
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
                     src={edition.image}
-                    alt={`${edition.city} ${edition.year}`}
+                    alt={`${edition.city} ${edition.country}`}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
@@ -129,7 +97,7 @@ export function Editions() {
                   
                   {/* Status Badge */}
                   <div className="absolute top-4 right-4">
-                    {getStatusBadge(edition.status)}
+                    {getStatusBadge(edition)}
                   </div>
                 </div>
 
@@ -147,14 +115,20 @@ export function Editions() {
                   </div>
 
                   {/* Description */}
-                  <p className="text-foreground/70 text-sm leading-relaxed">
-                    {edition.description}
-                  </p>
+                  {edition.description && (
+                    <p className="text-foreground/70 text-sm leading-relaxed">
+                      {edition.description}
+                    </p>
+                  )}
 
                   {/* Date */}
                   <div className="flex items-center gap-2 text-sm font-medium text-foreground/80">
                     <Calendar className="w-4 h-4 text-primary" />
-                    {edition.date}
+                    {new Date(edition.date).toLocaleDateString("fr-FR", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
                   </div>
 
                   {/* CTA */}
