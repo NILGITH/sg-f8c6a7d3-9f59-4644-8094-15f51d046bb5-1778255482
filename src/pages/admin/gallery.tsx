@@ -4,7 +4,7 @@ import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Trash2, Download, Upload, Image as ImageIcon } from "lucide-react";
+import { Plus, Trash2, Download, Upload, Image as ImageIcon, X } from "lucide-react";
 import { useContentManager } from "@/hooks/useContentManager";
 import { SEO } from "@/components/SEO";
 import Image from "next/image";
@@ -24,6 +24,9 @@ export default function AdminGallery() {
   const router = useRouter();
   const { data, setData, exportData, importData } = useContentManager<GalleryData>("gallery", { images: [] });
   const [newImage, setNewImage] = useState({ src: "", alt: "", span: "col-span-1 row-span-1" });
+  const [isUploading, setIsUploading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>("");
 
   useEffect(() => {
     const isAuth = localStorage.getItem("festival_admin_auth");
@@ -31,6 +34,67 @@ export default function AdminGallery() {
       router.push("/admin/login");
     }
   }, [router]);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      alert("Veuillez sélectionner une image");
+      return;
+    }
+
+    setSelectedFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewUrl(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleUploadImage = () => {
+    if (!selectedFile || !newImage.alt || !previewUrl) {
+      alert("Veuillez sélectionner une image et remplir la description");
+      return;
+    }
+
+    setIsUploading(true);
+
+    const image: GalleryImage = {
+      id: Date.now().toString(),
+      src: previewUrl, // Base64 image
+      alt: newImage.alt,
+      span: newImage.span,
+    };
+
+    setData({
+      images: [...data.images, image],
+    });
+
+    // Reset form
+    setNewImage({ src: "", alt: "", span: "col-span-1 row-span-1" });
+    setSelectedFile(null);
+    setPreviewUrl("");
+    setIsUploading(false);
+  };
+
+  const handleAddImageFromUrl = () => {
+    if (!newImage.src || !newImage.alt) {
+      alert("Veuillez remplir l'URL et la description");
+      return;
+    }
+
+    const image: GalleryImage = {
+      id: Date.now().toString(),
+      ...newImage,
+    };
+
+    setData({
+      images: [...data.images, image],
+    });
+
+    setNewImage({ src: "", alt: "", span: "col-span-1 row-span-1" });
+  };
 
   const handleAddImage = () => {
     if (!newImage.src || !newImage.alt) {
@@ -88,7 +152,7 @@ export default function AdminGallery() {
                 <Button variant="outline" size="sm" asChild>
                   <span>
                     <Upload className="w-4 h-4 mr-2" />
-                    Importer
+                    Importer JSON
                   </span>
                 </Button>
                 <input type="file" accept=".json" onChange={handleImport} className="hidden" />
@@ -98,48 +162,132 @@ export default function AdminGallery() {
 
           <Card className="border-2 border-primary">
             <CardContent className="pt-6">
-              <h3 className="font-semibold mb-4">Ajouter une nouvelle image</h3>
+              <h3 className="font-semibold mb-4">Uploader une nouvelle image</h3>
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium">URL de l'image</label>
-                  <Input
-                    value={newImage.src}
-                    onChange={(e) => setNewImage({ ...newImage, src: e.target.value })}
-                    placeholder="/nom-image.jpg ou URL complète"
-                  />
-                  <p className="text-xs text-foreground/50 mt-1">
-                    Placez vos images dans /public/ puis utilisez /nom-image.jpg
-                  </p>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium">Description (alt)</label>
-                    <Input
-                      value={newImage.alt}
-                      onChange={(e) => setNewImage({ ...newImage, alt: e.target.value })}
-                      placeholder="Description de l'image"
+                  <label className="text-sm font-medium mb-2 block">Option 1 : Upload depuis ordinateur</label>
+                  <label className="block">
+                    <Button variant="outline" className="w-full" asChild>
+                      <span>
+                        <Upload className="w-4 h-4 mr-2" />
+                        Sélectionner une image
+                      </span>
+                    </Button>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileSelect}
+                      className="hidden"
                     />
+                  </label>
+                  
+                  {previewUrl && (
+                    <div className="mt-4 space-y-4">
+                      <div className="relative aspect-video rounded-lg overflow-hidden bg-muted">
+                        <Image
+                          src={previewUrl}
+                          alt="Preview"
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-sm font-medium">Description (alt)</label>
+                          <Input
+                            value={newImage.alt}
+                            onChange={(e) => setNewImage({ ...newImage, alt: e.target.value })}
+                            placeholder="Description de l'image"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium">Taille</label>
+                          <select
+                            value={newImage.span}
+                            onChange={(e) => setNewImage({ ...newImage, span: e.target.value })}
+                            className="w-full px-3 py-2 border border-input rounded-md"
+                          >
+                            <option value="col-span-1 row-span-1">Normal (1x1)</option>
+                            <option value="col-span-2 row-span-2">Grande (2x2)</option>
+                            <option value="col-span-2 row-span-1">Large (2x1)</option>
+                            <option value="col-span-1 row-span-2">Haute (1x2)</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={handleUploadImage}
+                          disabled={isUploading}
+                          className="flex-1"
+                        >
+                          <Plus className="w-4 h-4 mr-2" />
+                          {isUploading ? "Upload..." : "Ajouter à la galerie"}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            setSelectedFile(null);
+                            setPreviewUrl("");
+                            setNewImage({ src: "", alt: "", span: "col-span-1 row-span-1" });
+                          }}
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t border-border" />
                   </div>
-                  <div>
-                    <label className="text-sm font-medium">Taille</label>
-                    <select
-                      value={newImage.span}
-                      onChange={(e) => setNewImage({ ...newImage, span: e.target.value })}
-                      className="w-full px-3 py-2 border border-input rounded-md"
-                    >
-                      <option value="col-span-1 row-span-1">Normal (1x1)</option>
-                      <option value="col-span-2 row-span-2">Grande (2x2)</option>
-                      <option value="col-span-2 row-span-1">Large (2x1)</option>
-                      <option value="col-span-1 row-span-2">Haute (1x2)</option>
-                    </select>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-foreground/50">Ou</span>
                   </div>
                 </div>
 
-                <Button onClick={handleAddImage} className="w-full">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Ajouter l'image
-                </Button>
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Option 2 : URL d'image</label>
+                  <div className="space-y-4">
+                    <Input
+                      value={newImage.src}
+                      onChange={(e) => setNewImage({ ...newImage, src: e.target.value })}
+                      placeholder="/nom-image.jpg ou URL complète"
+                    />
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm font-medium">Description (alt)</label>
+                        <Input
+                          value={newImage.alt}
+                          onChange={(e) => setNewImage({ ...newImage, alt: e.target.value })}
+                          placeholder="Description de l'image"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium">Taille</label>
+                        <select
+                          value={newImage.span}
+                          onChange={(e) => setNewImage({ ...newImage, span: e.target.value })}
+                          className="w-full px-3 py-2 border border-input rounded-md"
+                        >
+                          <option value="col-span-1 row-span-1">Normal (1x1)</option>
+                          <option value="col-span-2 row-span-2">Grande (2x2)</option>
+                          <option value="col-span-2 row-span-1">Large (2x1)</option>
+                          <option value="col-span-1 row-span-2">Haute (1x2)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <Button onClick={handleAddImageFromUrl} variant="outline" className="w-full">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Ajouter depuis URL
+                    </Button>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>

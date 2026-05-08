@@ -1,8 +1,9 @@
 "use client";
 
-import { Clock, ChefHat, Music, Trophy } from "lucide-react";
+import { Clock, ChefHat, Music, Trophy, Download } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { useContentManager } from "@/hooks/useContentManager";
 
 interface ProgramEvent {
@@ -22,6 +23,7 @@ interface ProgramData {
     location: string;
     city: string;
   };
+  programPdf?: string;
 }
 
 const iconMap: Record<string, typeof ChefHat> = {
@@ -31,7 +33,11 @@ const iconMap: Record<string, typeof ChefHat> = {
 };
 
 export function Program() {
-  const { data, isLoading } = useContentManager<ProgramData>("program", { events: [], festivalInfo: { dates: "", location: "", city: "" } });
+  const { data, isLoading } = useContentManager<ProgramData>("program", { 
+    events: [], 
+    festivalInfo: { dates: "", location: "", city: "" },
+    programPdf: ""
+  });
 
   if (isLoading) {
     return (
@@ -97,9 +103,24 @@ export function Program() {
             Téléchargez le programme détaillé avec tous les horaires, participants et activités 
             pour ne rien manquer du festival
           </p>
-          <button className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-semibold transition-colors">
-            Télécharger le programme PDF
-          </button>
+          {data.programPdf ? (
+            <Button
+              onClick={() => {
+                const link = document.createElement("a");
+                link.href = data.programPdf!;
+                link.download = "programme-festival-grillades.pdf";
+                link.click();
+              }}
+              className="bg-primary hover:bg-primary/90"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Télécharger le programme PDF
+            </Button>
+          ) : (
+            <Button className="bg-primary hover:bg-primary/90" disabled>
+              Programme PDF bientôt disponible
+            </Button>
+          )}
         </div>
       </div>
     </section>

@@ -1,6 +1,6 @@
 ---
 title: Admin - Réservations & Blog
-status: in_progress
+status: done
 priority: high
 type: feature
 tags: [admin, blog]
@@ -14,9 +14,10 @@ Créer pages admin pour gérer les réservations de billets et le blog. Interfac
 
 ## Checklist
 - [x] Créer page /admin/reservations avec gestion statuts
-- [ ] Créer page /admin/blog avec CRUD articles
-- [ ] Créer page publique /blog avec listing des articles
-- [ ] Créer page publique /blog/[slug] pour les articles
+- [x] Créer page /admin/blog avec CRUD articles
+- [x] Créer page publique /blog avec listing des articles
+- [x] Créer page publique /blog/[slug] pour les articles
+- [x] Ajouter lien Blog dans la navigation
 
 ## Acceptance
 - Admin peut gérer les réservations

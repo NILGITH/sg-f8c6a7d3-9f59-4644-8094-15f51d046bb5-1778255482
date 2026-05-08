@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Edit, Trash2, Save, Download, Upload, X } from "lucide-react";
+import { Plus, Edit, Trash2, Save, Download, Upload, X, FileText } from "lucide-react";
 import { useContentManager } from "@/hooks/useContentManager";
 import { SEO } from "@/components/SEO";
 
@@ -26,17 +26,21 @@ interface ProgramData {
     location: string;
     city: string;
   };
+  programPdf?: string;
 }
 
 export default function AdminProgram() {
   const router = useRouter();
-  const { data, setData, exportData, importData, resetData } = useContentManager<ProgramData>("program", {
+  const { data, setData, exportData, importData } = useContentManager<ProgramData>("program", {
     events: [],
     festivalInfo: { dates: "", location: "", city: "" },
+    programPdf: "",
   });
 
   const [editingEvent, setEditingEvent] = useState<ProgramEvent | null>(null);
   const [isAdding, setIsAdding] = useState(false);
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [isUploadingPdf, setIsUploadingPdf] = useState(false);
 
   useEffect(() => {
     const isAuth = localStorage.getItem("festival_admin_auth");
@@ -94,6 +98,42 @@ export default function AdminProgram() {
     }
   };
 
+  const handlePdfUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== "application/pdf") {
+      alert("Veuillez sélectionner un fichier PDF");
+      return;
+    }
+
+    setIsUploadingPdf(true);
+    setPdfFile(file);
+
+    // Convert to base64 for localStorage storage
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64 = reader.result as string;
+      setData({
+        ...data,
+        programPdf: base64,
+      });
+      setIsUploadingPdf(false);
+      alert("Programme PDF uploadé avec succès !");
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemovePdf = () => {
+    if (confirm("Supprimer le fichier PDF du programme ?")) {
+      setData({
+        ...data,
+        programPdf: "",
+      });
+      setPdfFile(null);
+    }
+  };
+
   return (
     <>
       <SEO title="Gestion du Programme - Admin" />
@@ -111,23 +151,91 @@ export default function AdminProgram() {
             <div className="flex gap-2">
               <Button variant="outline" size="sm" onClick={exportData}>
                 <Download className="w-4 h-4 mr-2" />
-                Exporter
+                Exporter JSON
               </Button>
               <label>
                 <Button variant="outline" size="sm" asChild>
                   <span>
                     <Upload className="w-4 h-4 mr-2" />
-                    Importer
+                    Importer JSON
                   </span>
                 </Button>
                 <input type="file" accept=".json" onChange={handleImport} className="hidden" />
               </label>
               <Button size="sm" onClick={handleAddEvent}>
                 <Plus className="w-4 h-4 mr-2" />
-                Ajouter un événement
+                Ajouter événement
               </Button>
             </div>
           </div>
+
+          {/* PDF Upload Section */}
+          <Card className="border-2 border-accent">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="w-5 h-5" />
+                Programme PDF Téléchargeable
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-foreground/70">
+                Uploadez le programme complet en PDF. Il sera disponible en téléchargement sur le site public.
+              </p>
+              
+              {data.programPdf ? (
+                <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <FileText className="w-8 h-8 text-primary" />
+                    <div>
+                      <p className="font-medium">Programme uploadé</p>
+                      <p className="text-sm text-foreground/60">
+                        Fichier disponible sur le site
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const link = document.createElement("a");
+                        link.href = data.programPdf!;
+                        link.download = "programme-festival-grillades.pdf";
+                        link.click();
+                      }}
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Télécharger
+                    </Button>
+                    <Button variant="destructive" size="sm" onClick={handleRemovePdf}>
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      Supprimer
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <label className="block">
+                  <Button
+                    className="w-full"
+                    disabled={isUploadingPdf}
+                    asChild
+                  >
+                    <span>
+                      <Upload className="w-4 h-4 mr-2" />
+                      {isUploadingPdf ? "Upload en cours..." : "Uploader le programme PDF"}
+                    </span>
+                  </Button>
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    onChange={handlePdfUpload}
+                    className="hidden"
+                    disabled={isUploadingPdf}
+                  />
+                </label>
+              )}
+            </CardContent>
+          </Card>
 
           {(editingEvent || isAdding) && (
             <Card className="border-2 border-primary">
