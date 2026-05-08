@@ -1,0 +1,28 @@
+{
+  "partners": [
+    {
+      "id": "1",
+      "name": "Orange Côte d'Ivoire",
+      "logo": "/festival-poster.png",
+      "website": "https://www.orange.ci",
+      "category": "sponsor",
+      "featured": true
+    },
+    {
+      "id": "2",
+      "name": "MTN CI",
+      "logo": "/festival-menu.png",
+      "website": "https://www.mtn.ci",
+      "category": "sponsor",
+      "featured": true
+    },
+    {
+      "id": "3",
+      "name": "Solibra",
+      "logo": "/festival-info.png",
+      "website": "#",
+      "category": "sponsor",
+      "featured": false
+    }
+  ]
+}

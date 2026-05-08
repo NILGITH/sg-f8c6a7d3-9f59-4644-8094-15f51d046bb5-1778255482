@@ -44,7 +44,8 @@ export function CTA() {
     },
   ];
 
-  const offers = data.offers.length > 0 ? data.offers : fallbackOffers;
+  // Safe check for data.offers
+  const offers = (data?.offers && data.offers.length > 0) ? data.offers : fallbackOffers;
 
   return (
     <section id="contact" className="py-16 md:py-20 lg:py-24 bg-gradient-to-b from-background to-muted/30">
