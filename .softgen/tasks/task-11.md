@@ -1,6 +1,6 @@
 ---
 title: Refondre Hero pour dimension internationale
-status: in_progress
+status: done
 priority: urgent
 type: feature
 tags: [homepage, hero, international]

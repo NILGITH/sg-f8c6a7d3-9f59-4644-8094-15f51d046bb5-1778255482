@@ -1,6 +1,6 @@
 ---
 title: Créer section "Nos Éditions" avec les villes
-status: in_progress
+status: done
 priority: high
 type: feature
 tags: [homepage, editions, cities]
