@@ -1,6 +1,6 @@
 ---
 title: Section Partenaires & Gestion Admin
-status: in_progress
+status: done
 priority: high
 type: feature
 tags: [partners, admin]
@@ -19,7 +19,7 @@ Créer section partenaires sur le site public affichant les logos, et interface 
 - [x] Créer page /admin/partners avec CRUD
 - [x] Intégrer section Partners sur homepage
 - [x] Ajouter lien Partenaires dans navigation admin
-- [ ] Fixer erreur TypeScript ContentType pour "partners"
+- [x] Fixer type TypeScript ContentType pour "partners"
 
 ## Acceptance
 - Section partenaires visible sur le site avec logos
