@@ -1,36 +1,65 @@
 {
-  "events": [
+  "cities": [
     {
-      "id": "1",
-      "title": "Démonstrations Culinaires",
-      "description": "Assistez aux démonstrations des plus grands chefs grilleurs d'Abidjan qui partagent leurs secrets et techniques ancestrales.",
-      "time": "10h - 18h",
-      "badge": "Tous les jours",
-      "icon": "ChefHat",
-      "color": "bg-primary/10 border-primary/20"
+      "id": "abidjan",
+      "city": "Abidjan",
+      "dates": "15-17 Août 2026",
+      "location": "Parc des Sports, Treichville",
+      "events": [
+        {
+          "id": "1",
+          "title": "Grande Ouverture",
+          "description": "Cérémonie d'ouverture avec démonstrations des maîtres grilleurs d'Abidjan",
+          "time": "Vendredi 18h - 21h",
+          "badge": "Jour 1",
+          "icon": "ChefHat",
+          "color": "bg-primary/10 border-primary/20"
+        },
+        {
+          "id": "2",
+          "title": "Compétition des Chefs",
+          "description": "Battle culinaire entre les meilleurs grilleurs de Côte d'Ivoire",
+          "time": "Samedi 14h - 18h",
+          "badge": "Jour 2",
+          "icon": "Trophy",
+          "color": "bg-secondary/10 border-secondary/20"
+        },
+        {
+          "id": "3",
+          "title": "Concert & Gala Final",
+          "description": "Soirée musicale avec artistes locaux et dégustation géante",
+          "time": "Dimanche 19h - 23h",
+          "badge": "Jour 3",
+          "icon": "Music",
+          "color": "bg-accent/10 border-accent/20"
+        }
+      ]
     },
     {
-      "id": "2",
-      "title": "Grand Concours de Grillades",
-      "description": "Compétition entre les meilleurs grilleurs pour remporter le titre du Maître Grilleur 2026. Jury professionnel et vote du public.",
-      "time": "14h - 17h",
-      "badge": "Dimanche 17 Août",
-      "icon": "Trophy",
-      "color": "bg-secondary/10 border-secondary/20"
-    },
-    {
-      "id": "3",
-      "title": "Concerts & Animations",
-      "description": "Ambiance musicale avec des artistes locaux, DJ sets, danse traditionnelle et spectacles pyrotechniques pour clôturer chaque soirée.",
-      "time": "18h - 23h",
-      "badge": "Soirées",
-      "icon": "Music",
-      "color": "bg-accent/10 border-accent/20"
+      "id": "dakar",
+      "city": "Dakar",
+      "dates": "10-12 Septembre 2026",
+      "location": "Place du Souvenir Africain",
+      "events": [
+        {
+          "id": "1",
+          "title": "Découverte des Grillades Sénégalaises",
+          "description": "Initiation aux techniques de grillade traditionnelles du Sénégal",
+          "time": "Jeudi 17h - 20h",
+          "badge": "Jour 1",
+          "icon": "ChefHat",
+          "color": "bg-primary/10 border-primary/20"
+        },
+        {
+          "id": "2",
+          "title": "Nuit Teranga",
+          "description": "Grand festin et concert mbalax sous les étoiles",
+          "time": "Samedi 18h - Minuit",
+          "badge": "Jour 3",
+          "icon": "Music",
+          "color": "bg-accent/10 border-accent/20"
+        }
+      ]
     }
-  ],
-  "festivalInfo": {
-    "dates": "15-17 Août 2026",
-    "location": "Parc des Sports, Treichville",
-    "city": "Abidjan, Côte d'Ivoire"
-  }
+  ]
 }

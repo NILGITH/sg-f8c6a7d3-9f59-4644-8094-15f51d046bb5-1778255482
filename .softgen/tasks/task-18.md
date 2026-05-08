@@ -1,6 +1,6 @@
 ---
 title: Mettre à jour admin Programme pour multi-villes
-status: todo
+status: done
 priority: medium
 type: feature
 tags: [admin, program]
@@ -13,10 +13,10 @@ position: 8
 Adapter l'admin Programme pour gérer les programmes par ville/édition, pas seulement un programme global.
 
 ## Checklist
-- [ ] Ajouter sélecteur de ville dans admin/program.tsx
-- [ ] Structure JSON avec programmes par ville
-- [ ] Possibilité de dupliquer programme entre villes
-- [ ] Filtrage et édition par ville
+- [x] Ajouter sélecteur de ville dans admin/program.tsx
+- [x] Structure JSON avec programmes par ville
+- [x] Possibilité de dupliquer programme entre villes
+- [x] Filtrage et édition par ville
 
 ## Acceptance
 - L'admin peut créer un programme différent pour chaque ville
