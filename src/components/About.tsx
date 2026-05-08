@@ -48,7 +48,7 @@ export function About() {
           <div className="order-1 md:order-2">
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
               <Image
-                src="/generated/about-grilling.png"
+                src="/641501809_122170458476861582_102146802286182265_n.jpg"
                 alt="Grillades traditionnelles"
                 fill
                 className="object-cover"

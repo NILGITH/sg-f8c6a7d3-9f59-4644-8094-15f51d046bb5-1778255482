@@ -8,13 +8,13 @@ export function Hero() {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
         <Image
-          src="/generated/hero-festival.png"
+          src="/641655009_122170459016861582_5624134569926200889_n.jpg"
           alt="Festival des Grillades d'Abidjan"
           fill
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/60 to-foreground/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/70 to-foreground/50" />
       </div>
 
       {/* Content */}
