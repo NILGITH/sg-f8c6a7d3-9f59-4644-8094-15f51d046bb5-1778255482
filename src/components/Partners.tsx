@@ -34,6 +34,9 @@ export function Partners() {
   const featuredPartners = data.partners.filter((p) => p.featured);
   const regularPartners = data.partners.filter((p) => !p.featured);
 
+  // Duplicate partners for infinite scroll effect
+  const duplicatedPartners = [...regularPartners, ...regularPartners, ...regularPartners];
+
   if (data.partners.length === 0) {
     return null;
   }
@@ -107,7 +110,7 @@ export function Partners() {
           </div>
         )}
 
-        {/* Regular Partners */}
+        {/* Regular Partners - Infinite Scroll */}
         {regularPartners.length > 0 && (
           <div className="relative">
             {/* Divider */}
@@ -119,32 +122,46 @@ export function Partners() {
               <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
             </div>
 
-            {/* Partners Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 max-w-6xl mx-auto">
-              {regularPartners.map((partner, index) => (
-                <a
-                  key={partner.id}
-                  href={partner.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`group relative p-6 bg-background/50 backdrop-blur-sm rounded-xl border border-border/50 hover:border-primary/50 hover:bg-background transition-all duration-300 hover:shadow-lg hover:-translate-y-1 animate-fade-in stagger-${Math.min(index + 1, 5)}`}
-                >
-                  <div className="relative aspect-video">
-                    <Image
-                      src={partner.logo}
-                      alt={partner.name}
-                      fill
-                      className="object-contain transition-all duration-300 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100"
-                    />
-                  </div>
-                  
-                  {/* Tooltip on hover */}
-                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-foreground text-background text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
-                    {partner.name}
-                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-foreground rotate-45" />
-                  </div>
-                </a>
-              ))}
+            {/* Scrolling Container */}
+            <div className="scroll-container relative overflow-hidden py-4">
+              {/* Gradient Edges */}
+              <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+              <div className="absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
+              {/* Scrolling Track */}
+              <div className="flex gap-8 md:gap-12 animate-scroll">
+                {duplicatedPartners.map((partner, index) => (
+                  <a
+                    key={`${partner.id}-${index}`}
+                    href={partner.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative flex-shrink-0 w-40 md:w-48 h-24 md:h-28 p-6 bg-background/50 backdrop-blur-sm rounded-xl border border-border/50 hover:border-primary/50 hover:bg-background transition-all duration-300 hover:shadow-lg hover:scale-105"
+                  >
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={partner.logo}
+                        alt={partner.name}
+                        fill
+                        className="object-contain transition-all duration-300 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100"
+                      />
+                    </div>
+                    
+                    {/* Tooltip on hover */}
+                    <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-foreground text-background text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none z-20">
+                      {partner.name}
+                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-foreground rotate-45" />
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Scroll Hint */}
+            <div className="text-center mt-8">
+              <p className="text-xs text-foreground/50">
+                Survolez pour mettre en pause • {regularPartners.length} partenaire{regularPartners.length > 1 ? "s" : ""}
+              </p>
             </div>
           </div>
         )}
