@@ -1,6 +1,6 @@
 ---
 title: Adapter Program pour éditions multiples
-status: todo
+status: done
 priority: medium
 type: feature
 tags: [homepage, program, cities]
@@ -13,10 +13,10 @@ position: 4
 Permettre au programme de montrer les événements par édition/ville, avec possibilité de filtrer ou switcher entre les villes.
 
 ## Checklist
-- [ ] Ajouter sélecteur de ville au composant Program
-- [ ] Adapter le JSON pour supporter multiple éditions
-- [ ] Design de tabs ou dropdown pour choisir la ville
-- [ ] Programme par défaut: prochaine édition ou ville d'origine
+- [x] Ajouter sélecteur de ville au composant Program
+- [x] Adapter le JSON pour supporter multiple éditions
+- [x] Design de tabs ou dropdown pour choisir la ville
+- [x] Programme par défaut: prochaine édition ou ville d'origine
 
 ## Acceptance
 - Les visiteurs peuvent consulter le programme de chaque ville

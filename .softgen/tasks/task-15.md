@@ -1,6 +1,6 @@
 ---
 title: Mettre à jour Footer avec contact multi-villes
-status: todo
+status: done
 priority: medium
 type: feature
 tags: [footer, contact, cities]
@@ -13,10 +13,10 @@ position: 5
 Adapter le footer pour refléter la présence dans plusieurs villes avec contacts locaux et siège à Abidjan.
 
 ## Checklist
-- [ ] Section "Nos Bureaux" ou "Contactez-nous" avec Abidjan comme siège
-- [ ] Contacts pour Dakar, Cotonou et autres villes actives
-- [ ] Liens vers réseaux sociaux par édition si applicable
-- [ ] Mention "Abidjan, Côte d'Ivoire - Maison Mère" bien visible
+- [x] Section "Nos Bureaux" ou "Contactez-nous" avec Abidjan comme siège
+- [x] Contacts pour Dakar, Cotonou et autres villes actives
+- [x] Liens vers réseaux sociaux par édition si applicable
+- [x] Mention "Abidjan, Côte d'Ivoire - Maison Mère" bien visible
 
 ## Acceptance
 - Le footer communique la structure multi-villes
