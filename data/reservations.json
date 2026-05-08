@@ -1,0 +1,28 @@
+{
+  "reservations": [
+    {
+      "id": "RES001",
+      "customerName": "Kouassi Yao",
+      "email": "kouassi@example.com",
+      "phone": "+225 07 08 09 10 11",
+      "ticketType": "Pass 3 Jours",
+      "quantity": 2,
+      "totalAmount": "24 000 FCFA",
+      "status": "confirmed",
+      "paymentMethod": "Mobile Money",
+      "createdAt": "2026-05-01T10:30:00Z"
+    },
+    {
+      "id": "RES002",
+      "customerName": "Ama Diallo",
+      "email": "ama@example.com",
+      "phone": "+225 05 06 07 08 09",
+      "ticketType": "Pass 1 Jour",
+      "quantity": 1,
+      "totalAmount": "5 000 FCFA",
+      "status": "pending",
+      "paymentMethod": "Orange Money",
+      "createdAt": "2026-05-03T14:20:00Z"
+    }
+  ]
+}
