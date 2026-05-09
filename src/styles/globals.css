@@ -4,203 +4,140 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer base {
+  :root {
+    /* Palette BRAISE & GRILLADE - Mode Clair */
+    --background: 330 11% 96%;        /* Light Smoke #F5F3F4 */
+    --foreground: 210 10% 10%;        /* Charcoal #161A1D */
+    
+    --primary: 355 78% 57%;           /* Ember Red #E63946 */
+    --primary-foreground: 0 0% 100%;  /* White */
+    
+    --secondary: 358 72% 36%;         /* Deep Red #A4161A */
+    --secondary-foreground: 0 0% 100%; /* White */
+    
+    --accent: 28 100% 48%;            /* Ember Orange #F77F00 */
+    --accent-foreground: 0 0% 100%;   /* White */
+    
+    --muted: 7 7% 67%;                /* Smoke Gray #B1A7A6 */
+    --muted-foreground: 210 10% 20%;  /* Dark Charcoal */
+    
+    --card: 0 0% 100%;                /* White */
+    --card-foreground: 210 10% 10%;   /* Charcoal */
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 10% 10%;
+    
+    --border: 7 7% 87%;               /* Light Gray */
+    --input: 7 7% 87%;
+    --ring: 355 78% 57%;              /* Ember Red */
+    
+    --radius: 0.5rem;
+    
+    /* Grillades accent colors */
+    --golden: 33 51% 65%;             /* Golden Brown #D4A574 */
+    --smoke: 7 7% 67%;                /* Smoke Gray */
+  }
+
+  .dark {
+    /* Palette BRAISE & GRILLADE - Mode Sombre */
+    --background: 210 10% 10%;        /* Charcoal #161A1D */
+    --foreground: 330 11% 96%;        /* Light Smoke */
+    
+    --primary: 355 78% 57%;           /* Ember Red #E63946 */
+    --primary-foreground: 0 0% 100%;  /* White */
+    
+    --secondary: 28 100% 48%;         /* Ember Orange #F77F00 */
+    --secondary-foreground: 0 0% 100%; /* White */
+    
+    --accent: 33 51% 65%;             /* Golden Brown #D4A574 */
+    --accent-foreground: 210 10% 10%; /* Dark */
+    
+    --muted: 210 10% 20%;             /* Dark Gray */
+    --muted-foreground: 7 7% 67%;     /* Smoke Gray */
+    
+    --card: 210 10% 15%;              /* Dark Card */
+    --card-foreground: 330 11% 96%;   /* Light Smoke */
+    
+    --popover: 210 10% 15%;
+    --popover-foreground: 330 11% 96%;
+    
+    --border: 210 10% 25%;            /* Dark Border */
+    --input: 210 10% 25%;
+    --ring: 355 78% 57%;              /* Ember Red */
+    
+    /* Grillades accent colors */
+    --golden: 33 51% 65%;
+    --smoke: 7 7% 67%;
   }
 }
 
 @layer base {
-  :root {
-    --radius: 0.55rem;
-    --background: 0 100% 98%;
-    --foreground: 0 0% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
-    --primary: 350 85% 42%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 65% 51%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 0 20% 95%;
-    --muted-foreground: 0 0% 35%;
-    --accent: 45 62% 53%;
-    --accent-foreground: 0 0% 10%;
-    --destructive: 0 65% 51%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 15% 90%;
-    --input: 0 15% 90%;
-    --ring: 350 85% 42%;
-    --chart-1: 350 85% 42%;
-    --chart-2: 0 65% 51%;
-    --chart-3: 45 62% 53%;
-    --chart-4: 0 20% 95%;
-    --chart-5: 0 0% 10%;
-    --sidebar: 0 100% 98%;
-    --sidebar-foreground: 0 0% 10%;
-    --sidebar-primary: 350 85% 42%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 20% 95%;
-    --sidebar-accent-foreground: 0 0% 10%;
-    --sidebar-border: 0 15% 90%;
-    --sidebar-ring: 350 85% 42%;
-  }
-
-  .dark {
-    --radius: 0.55rem;
-    --background: 0 0% 10%;
-    --foreground: 0 100% 98%;
-    --card: 0 0% 15%;
-    --card-foreground: 0 100% 98%;
-    --popover: 0 0% 15%;
-    --popover-foreground: 0 100% 98%;
-    --primary: 350 85% 42%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 65% 51%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 0 0% 25%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 45 62% 53%;
-    --accent-foreground: 0 0% 10%;
-    --destructive: 0 65% 51%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 25%;
-    --input: 0 0% 25%;
-    --ring: 350 85% 42%;
-    --chart-1: 350 85% 42%;
-    --chart-2: 0 65% 51%;
-    --chart-3: 45 62% 53%;
-    --chart-4: 0 20% 95%;
-    --chart-5: 0 100% 98%;
-    --sidebar: 0 0% 15%;
-    --sidebar-foreground: 0 100% 98%;
-    --sidebar-primary: 350 85% 42%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 25%;
-    --sidebar-accent-foreground: 0 100% 98%;
-    --sidebar-border: 0 0% 25%;
-    --sidebar-ring: 350 85% 42%;
-  }
-  
   * {
     @apply border-border;
   }
-  
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: hsl(var(--muted));
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: hsl(var(--primary));
-    border-radius: 5px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--primary) / 0.8);
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
   }
 }
 
-@layer components {
-  .container {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
-  }
-
+@layer utilities {
   .animate-fade-in {
     animation: fadeIn 0.6s ease-out forwards;
   }
-
+  
   .animate-slide-up {
-    animation: slideUp 0.7s ease-out forwards;
+    animation: slideUp 0.8s ease-out forwards;
   }
-
-  .animate-slide-in-left {
-    animation: slideInLeft 0.8s ease-out forwards;
-  }
-
-  .animate-slide-in-right {
-    animation: slideInRight 0.8s ease-out forwards;
-  }
-
+  
   .animate-scale-in {
     animation: scaleIn 0.5s ease-out forwards;
   }
-
+  
   .animate-float {
     animation: float 3s ease-in-out infinite;
   }
-
+  
   .stagger-1 { animation-delay: 0.1s; }
   .stagger-2 { animation-delay: 0.2s; }
   .stagger-3 { animation-delay: 0.3s; }
   .stagger-4 { animation-delay: 0.4s; }
   .stagger-5 { animation-delay: 0.5s; }
-
-  .animate-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  .animate-on-scroll.animated {
-    opacity: 1;
-    transform: translateY(0);
-    transition: all 0.6s ease-out;
-  }
-
-  .animate-scroll {
-    animation: scroll 30s linear infinite;
-  }
-
-  .animate-scroll-fast {
-    animation: scroll 20s linear infinite;
-  }
-
-  @keyframes scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  .scroll-container:hover .animate-scroll {
-    animation-play-state: paused;
-  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-60px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(60px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes float {

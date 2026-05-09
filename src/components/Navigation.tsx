@@ -2,15 +2,19 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 
 export function Navigation() {
-  const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
@@ -18,20 +22,10 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Prevent body scroll when menu is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen]);
-
   const navLinks = [
+    { href: "/", label: "Accueil" },
     { href: "/#about", label: "À propos" },
+    { href: "/#editions", label: "Nos Éditions" },
     { href: "/#program", label: "Programme" },
     { href: "/blog", label: "Blog" },
     { href: "/contact", label: "Contact" },
@@ -41,127 +35,113 @@ export function Navigation() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-white shadow-lg"
-          : "bg-white/95 backdrop-blur-sm"
+          ? "bg-background/95 backdrop-blur-md shadow-lg border-b border-border"
+          : "bg-transparent"
       }`}
     >
       <div className="container">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 md:gap-3 group">
-            <div className="relative w-12 h-12 md:w-14 md:h-14 group-hover:scale-110 transition-transform duration-300">
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all">
               <Image
                 src="/logo-festival.jpg"
                 alt="Festival des Grillades"
                 fill
-                className="object-contain"
+                className="object-cover"
               />
             </div>
-            <span className="font-serif text-base md:text-xl font-bold text-foreground hidden sm:block">
-              Festival des Grillades
-            </span>
-            <span className="font-serif text-base md:text-xl font-bold text-foreground sm:hidden">
-              FGA
-            </span>
+            <div className="hidden md:block">
+              <h1 className="font-serif text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                Festival des Grillades
+              </h1>
+              <p className="text-xs text-foreground/70">D'Abidjan au Monde</p>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6 lg:gap-8">
+          <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-foreground/80 hover:text-primary font-medium transition-all duration-300 hover:scale-105 relative group"
+                className="text-foreground/80 hover:text-primary font-medium transition-colors relative group"
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
               </Link>
             ))}
-            <Button
-              size="sm"
-              className="bg-primary hover:bg-primary/90 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
-            >
-              Réserver
-            </Button>
+            
+            {/* Theme Toggle */}
+            {mounted && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="rounded-full"
+              >
+                {theme === "dark" ? (
+                  <Sun className="w-5 h-5" />
+                ) : (
+                  <Moon className="w-5 h-5" />
+                )}
+              </Button>
+            )}
+
+            <Link href="/contact">
+              <Button className="bg-primary hover:bg-primary/90 text-white font-semibold">
+                Réserver
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 hover:bg-muted rounded-lg transition-all duration-300 hover:scale-110"
-            aria-label="Toggle menu"
-          >
-            {isOpen ? (
-              <X className="w-6 h-6 text-foreground" />
-            ) : (
-              <Menu className="w-6 h-6 text-foreground" />
+          <div className="lg:hidden flex items-center gap-2">
+            {mounted && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="rounded-full"
+              >
+                {theme === "dark" ? (
+                  <Sun className="w-5 h-5" />
+                ) : (
+                  <Moon className="w-5 h-5" />
+                )}
+              </Button>
             )}
-          </button>
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-foreground p-2"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
-        {/* Mobile Menu Overlay */}
-        {isOpen && (
-          <div
-            className="fixed inset-0 bg-foreground/80 backdrop-blur-sm md:hidden animate-fade-in"
-            onClick={() => setIsOpen(false)}
-          />
-        )}
-
         {/* Mobile Menu */}
-        <div
-          className={`fixed top-16 right-0 h-[calc(100vh-4rem)] w-72 bg-white shadow-2xl md:hidden transform transition-transform duration-300 ease-out ${
-            isOpen ? "translate-x-0" : "translate-x-full"
-          }`}
-        >
-          <div className="flex flex-col h-full p-6 space-y-6">
-            {/* Navigation Links */}
-            <nav className="space-y-4">
-              {navLinks.map((link, index) => (
+        {isMobileMenuOpen && (
+          <div className="lg:hidden absolute top-full left-0 right-0 bg-background/98 backdrop-blur-md border-b border-border shadow-xl">
+            <div className="container py-6 space-y-4">
+              {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`block text-lg font-medium text-foreground/80 hover:text-primary transition-all duration-300 hover:translate-x-2 animate-slide-in-right stagger-${index + 1}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block text-foreground/80 hover:text-primary font-medium py-2 transition-colors"
                 >
                   {link.label}
                 </Link>
               ))}
-            </nav>
-
-            {/* CTA Button */}
-            <div className="pt-6 border-t border-border animate-slide-in-right stagger-5">
-              <Button
-                size="lg"
-                className="w-full bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-                onClick={() => setIsOpen(false)}
-              >
-                Réserver ma place
-              </Button>
-            </div>
-
-            {/* Contact Info */}
-            <div className="mt-auto pt-6 border-t border-border space-y-3 text-sm text-foreground/70 animate-slide-in-right stagger-5">
-              <p>📧 contact@festivalgrillades.ci</p>
-              <p>📞 +225 07 XX XX XX XX</p>
-              <div className="flex gap-4 pt-2">
-                <a
-                  href="https://www.facebook.com/festivaldesgrilladesdabidjan"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-primary transition-colors duration-300"
-                >
-                  Facebook
-                </a>
-                <a
-                  href="#"
-                  className="hover:text-primary transition-colors duration-300"
-                >
-                  Instagram
-                </a>
-              </div>
+              <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button className="w-full bg-primary hover:bg-primary/90 text-white font-semibold">
+                  Réserver
+                </Button>
+              </Link>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </nav>
   );
