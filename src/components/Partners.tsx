@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
@@ -9,6 +9,8 @@ import { partnerService, type Partner } from "@/services/partnerService";
 export function Partners() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const principalScrollRef = useRef<HTMLDivElement>(null);
+  const supportScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     loadPartners();
@@ -24,6 +26,45 @@ export function Partners() {
       setIsLoading(false);
     }
   };
+
+  // Animation de défilement automatique
+  useEffect(() => {
+    const principalScroll = principalScrollRef.current;
+    const supportScroll = supportScrollRef.current;
+    
+    let principalAnimationId: number;
+    let supportAnimationId: number;
+    
+    const animatePrincipal = () => {
+      if (principalScroll) {
+        principalScroll.scrollLeft += 1;
+        if (principalScroll.scrollLeft >= principalScroll.scrollWidth / 2) {
+          principalScroll.scrollLeft = 0;
+        }
+      }
+      principalAnimationId = requestAnimationFrame(animatePrincipal);
+    };
+    
+    const animateSupport = () => {
+      if (supportScroll) {
+        supportScroll.scrollLeft -= 1;
+        if (supportScroll.scrollLeft <= 0) {
+          supportScroll.scrollLeft = supportScroll.scrollWidth / 2;
+        }
+      }
+      supportAnimationId = requestAnimationFrame(animateSupport);
+    };
+    
+    if (partners.length > 0) {
+      principalAnimationId = requestAnimationFrame(animatePrincipal);
+      supportAnimationId = requestAnimationFrame(animateSupport);
+    }
+    
+    return () => {
+      cancelAnimationFrame(principalAnimationId);
+      cancelAnimationFrame(supportAnimationId);
+    };
+  }, [partners.length]);
 
   if (isLoading) {
     return (
@@ -68,38 +109,52 @@ export function Partners() {
             <h3 className="text-center font-serif text-2xl md:text-3xl font-bold text-foreground mb-10">
               Partenaires Principaux
             </h3>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {principalPartners.map((partner, index) => (
-                <a
-                  key={partner.id}
-                  href={partner.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`group relative p-10 bg-background rounded-2xl border-2 border-border hover:border-primary transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 animate-scale-in stagger-${index + 1}`}
-                >
-                  <div className="relative aspect-video mb-6">
-                    <Image
-                      src={partner.logo}
-                      alt={partner.name}
-                      fill
-                      className="object-contain transition-all duration-500 grayscale group-hover:grayscale-0 group-hover:scale-110"
-                    />
-                  </div>
-
-                  <div className="text-center space-y-3">
-                    <h4 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors">
-                      {partner.name}
-                    </h4>
-                    
-                    <div className="flex items-center justify-center gap-2 text-sm text-foreground/60 group-hover:text-primary transition-colors">
-                      <span>Visiter le site</span>
-                      <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+            
+            {/* Conteneur avec défilement droite → gauche */}
+            <div className="relative overflow-hidden">
+              <div 
+                ref={principalScrollRef}
+                className="flex gap-8 overflow-x-hidden"
+                style={{ scrollBehavior: 'auto' }}
+              >
+                {/* Double les partenaires pour un défilement infini */}
+                {[...principalPartners, ...principalPartners].map((partner, index) => (
+                  <a
+                    key={`${partner.id}-${index}`}
+                    href={partner.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative flex-shrink-0 w-80 p-10 bg-background rounded-2xl border-2 border-border hover:border-primary transition-all duration-500 hover:shadow-2xl hover:-translate-y-2"
+                  >
+                    <div className="relative aspect-video mb-6">
+                      <Image
+                        src={partner.logo}
+                        alt={partner.name}
+                        fill
+                        className="object-contain transition-all duration-500 grayscale group-hover:grayscale-0 group-hover:scale-110"
+                        placeholder="blur"
+                        blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAwIiBoZWlnaHQ9IjQ3NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNzAwIiBoZWlnaHQ9IjQ3NSIgZmlsbD0iI2ZlZjVlNyIvPjwvc3ZnPg=="
+                        loading="lazy"
+                        sizes="320px"
+                        quality={85}
+                      />
                     </div>
-                  </div>
 
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary/10 to-transparent rounded-tr-2xl rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </a>
-              ))}
+                    <div className="text-center space-y-3">
+                      <h4 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors">
+                        {partner.name}
+                      </h4>
+                      
+                      <div className="flex items-center justify-center gap-2 text-sm text-foreground/60 group-hover:text-primary transition-colors">
+                        <span>Visiter le site</span>
+                        <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                      </div>
+                    </div>
+
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary/10 to-transparent rounded-tr-2xl rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         )}
@@ -114,33 +169,43 @@ export function Partners() {
               <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
             </div>
 
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
-              {supportPartners.map((partner) => (
-                <a
-                  key={partner.id}
-                  href={partner.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group relative aspect-square p-4 bg-background/50 backdrop-blur-sm rounded-xl border border-border/50 hover:border-primary/50 hover:bg-background transition-all duration-300 hover:shadow-lg hover:scale-105"
-                >
-                  <div key={partner.id} className="relative h-24 grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100">
-                    <Image
-                      src={partner.logo}
-                      alt={partner.name}
-                      fill
-                      className="object-contain"
-                      loading="lazy"
-                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
-                      quality={75}
-                    />
-                  </div>
-                  
-                  <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-foreground text-background text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none z-20">
-                    {partner.name}
-                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-foreground rotate-45" />
-                  </div>
-                </a>
-              ))}
+            {/* Conteneur avec défilement gauche → droite */}
+            <div className="relative overflow-hidden">
+              <div 
+                ref={supportScrollRef}
+                className="flex gap-6 overflow-x-hidden"
+                style={{ scrollBehavior: 'auto' }}
+              >
+                {/* Double les partenaires pour un défilement infini */}
+                {[...supportPartners, ...supportPartners].map((partner, index) => (
+                  <a
+                    key={`${partner.id}-${index}`}
+                    href={partner.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative flex-shrink-0 w-32 aspect-square p-4 bg-background/50 backdrop-blur-sm rounded-xl border border-border/50 hover:border-primary/50 hover:bg-background transition-all duration-300 hover:shadow-lg hover:scale-105"
+                  >
+                    <div className="relative h-full grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100">
+                      <Image
+                        src={partner.logo}
+                        alt={partner.name}
+                        fill
+                        className="object-contain"
+                        placeholder="blur"
+                        blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAwIiBoZWlnaHQ9IjQ3NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNzAwIiBoZWlnaHQ9IjQ3NSIgZmlsbD0iI2ZlZjVlNyIvPjwvc3ZnPg=="
+                        loading="lazy"
+                        sizes="128px"
+                        quality={80}
+                      />
+                    </div>
+                    
+                    <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-foreground text-background text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none z-20">
+                      {partner.name}
+                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-foreground rotate-45" />
+                    </div>
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         )}
