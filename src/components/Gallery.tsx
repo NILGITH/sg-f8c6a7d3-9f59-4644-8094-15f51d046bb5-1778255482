@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import { galleryService, type GalleryItem as GalleryImage } from "@/services/galleryService";
@@ -87,15 +86,12 @@ export function Gallery() {
                     className={`${spanClasses} relative overflow-hidden rounded-xl group cursor-pointer animate-scale-in stagger-${Math.min(index + 1, 5)} aspect-[4/3]`}
                     onClick={() => setSelectedImage(index)}
                   >
-                    <Image
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
                       src={image.image}
                       alt={image.caption || "Image de galerie"}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-125"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-125"
                       loading="lazy"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      quality={85}
-                      unoptimized
                     />
 
                     {/* Overlay on hover */}
@@ -152,16 +148,12 @@ export function Gallery() {
           </button>
 
           {/* Image Container */}
-          <div className="relative w-full h-full max-w-6xl max-h-[90vh] animate-scale-in">
-            <Image
+          <div className="relative w-full h-full max-w-6xl max-h-[90vh] animate-scale-in flex items-center justify-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={images[selectedImage].image}
               alt={images[selectedImage].caption || "Image de galerie"}
-              fill
-              className="object-contain"
-              priority
-              sizes="(max-width: 768px) 100vw, 90vw"
-              quality={90}
-              unoptimized
+              className="max-w-full max-h-full object-contain"
             />
             
             {/* Image Info */}
