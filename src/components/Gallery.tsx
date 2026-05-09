@@ -108,7 +108,8 @@ export function Gallery() {
                     {/* Decorative corner */}
                     <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
-                ))}
+                );
+              })}
             </div>
           )}
         </div>
