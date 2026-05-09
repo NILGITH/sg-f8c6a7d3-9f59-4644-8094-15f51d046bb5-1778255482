@@ -31,7 +31,7 @@ export default function Contact() {
         email: formData.email,
         phone: formData.phone,
         city: formData.city,
-        guests: formData.guests,
+        quantity: formData.guests,
         message: formData.message,
         ticket_type: "standard",
         status: "pending",

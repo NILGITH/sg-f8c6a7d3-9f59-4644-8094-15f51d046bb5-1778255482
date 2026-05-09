@@ -50,7 +50,7 @@ export default function AdminReservations() {
 
   const handleUpdateStatus = async (id: string, status: "pending" | "confirmed" | "cancelled") => {
     try {
-      await reservationService.update(id, { status });
+      await reservationService.updateStatus(id, status);
       await loadReservations();
     } catch (error) {
       console.error("Error updating status:", error);
@@ -66,7 +66,7 @@ export default function AdminReservations() {
       r.email,
       r.phone || "",
       r.city || "",
-      r.guests?.toString() || "1",
+      r.quantity?.toString() || "1",
       r.ticket_type || "",
       r.status,
     ]);
@@ -255,7 +255,7 @@ export default function AdminReservations() {
                       <div className="flex flex-col items-end gap-2">
                         {getStatusBadge(reservation.status)}
                         <div className="text-xs text-foreground/60">
-                          {reservation.guests} personne{reservation.guests > 1 ? "s" : ""}
+                          {reservation.quantity} personne{reservation.quantity > 1 ? "s" : ""}
                         </div>
                       </div>
                     </div>
