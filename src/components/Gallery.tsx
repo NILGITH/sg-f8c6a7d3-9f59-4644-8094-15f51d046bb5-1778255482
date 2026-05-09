@@ -16,10 +16,16 @@ export function Gallery() {
 
   const loadGallery = async () => {
     try {
+      console.log("🖼️ Loading gallery...");
       const data = await galleryService.getAll();
+      console.log("✅ Gallery data received:", data);
+      console.log("📊 Number of images:", data.length);
+      if (data.length > 0) {
+        console.log("🔍 First image sample:", data[0]);
+      }
       setImages(data);
     } catch (error) {
-      console.error("Error loading gallery:", error);
+      console.error("❌ Error loading gallery:", error);
     } finally {
       setIsLoading(false);
     }

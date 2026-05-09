@@ -5,16 +5,20 @@ export type GalleryItem = Tables<"gallery">;
 
 export const galleryService = {
   async getAll() {
+    console.log("📡 Fetching gallery from Supabase...");
     const { data, error } = await supabase
       .from("gallery")
       .select("*")
       .order("order_position", { ascending: true });
 
+    console.log("📥 Supabase response:", { data, error });
+
     if (error) {
-      console.error("Error fetching gallery:", error);
+      console.error("❌ Error fetching gallery:", error);
       return [];
     }
 
+    console.log("✅ Gallery items count:", data?.length || 0);
     return data || [];
   },
 
