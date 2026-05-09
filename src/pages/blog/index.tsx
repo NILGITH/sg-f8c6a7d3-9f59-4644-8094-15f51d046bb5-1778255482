@@ -75,6 +75,9 @@ export default function BlogPage() {
                             alt={featuredPost.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            priority
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            quality={85}
                           />
                         </div>
                         <CardContent className="p-8 flex flex-col justify-center">
@@ -121,6 +124,9 @@ export default function BlogPage() {
                             alt={post.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            quality={75}
                           />
                         </div>
                         <CardContent className="p-6">

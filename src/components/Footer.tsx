@@ -59,6 +59,9 @@ export function Footer() {
                     alt="Festival des Grillades"
                     fill
                     className="object-cover"
+                    loading="lazy"
+                    sizes="64px"
+                    quality={75}
                   />
                 </div>
                 <div>

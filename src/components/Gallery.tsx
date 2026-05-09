@@ -72,38 +72,43 @@ export function Gallery() {
           ) : (
             /* Gallery Grid - Responsive & Aligned */
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-              {images.map((image, index) => (
-                <div
-                  key={image.id}
-                  className="relative aspect-[4/3] overflow-hidden rounded-xl group cursor-pointer animate-scale-in border-2 border-border hover:border-primary/50 transition-all duration-300"
-                  style={{ animationDelay: `${Math.min(index * 0.1, 0.5)}s` }}
-                  onClick={() => setSelectedImage(index)}
-                >
-                  <Image
-                    src={image.image}
-                    alt={image.caption || "Image de galerie"}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
+              {images.map((image, index) => {
+                const spanClasses = "col-span-1 row-span-1";
+                
+                return (
+                  <div
+                    key={image.id}
+                    className={`${spanClasses} relative overflow-hidden rounded-xl group cursor-pointer animate-scale-in stagger-${Math.min(index + 1, 5)}`}
+                    onClick={() => setSelectedImage(index)}
+                  >
+                    <Image
+                      src={image.image}
+                      alt={image.caption || "Image de galerie"}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-125"
+                      loading="lazy"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      quality={80}
+                    />
 
-                  {/* Overlay on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                    {/* Overlay on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
 
-                  {/* Caption on hover */}
-                  <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
-                    <p className="text-white text-base font-medium line-clamp-2 mb-2">
-                      {image.caption || "Image du festival"}
-                    </p>
-                    <div className="flex items-center gap-2 text-white/80 text-sm">
-                      <ZoomIn className="w-4 h-4" />
-                      <span>Cliquer pour agrandir</span>
+                    {/* Caption on hover */}
+                    <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+                      <p className="text-white text-base font-medium line-clamp-2 mb-2">
+                        {image.caption || "Image du festival"}
+                      </p>
+                      <div className="flex items-center gap-2 text-white/80 text-sm">
+                        <ZoomIn className="w-4 h-4" />
+                        <span>Cliquer pour agrandir</span>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Decorative corner */}
-                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </div>
-              ))}
+                    {/* Decorative corner */}
+                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                ))}
             </div>
           )}
         </div>
@@ -146,6 +151,8 @@ export function Gallery() {
               fill
               className="object-contain"
               priority
+              sizes="(max-width: 768px) 100vw, 90vw"
+              quality={90}
             />
             
             {/* Image Info */}

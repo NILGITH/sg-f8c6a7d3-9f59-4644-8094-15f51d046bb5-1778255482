@@ -123,12 +123,15 @@ export function Partners() {
                   rel="noopener noreferrer"
                   className="group relative aspect-square p-4 bg-background/50 backdrop-blur-sm rounded-xl border border-border/50 hover:border-primary/50 hover:bg-background transition-all duration-300 hover:shadow-lg hover:scale-105"
                 >
-                  <div className="relative w-full h-full">
+                  <div key={partner.id} className="relative h-24 grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100">
                     <Image
                       src={partner.logo}
                       alt={partner.name}
                       fill
-                      className="object-contain transition-all duration-300 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100"
+                      className="object-contain"
+                      loading="lazy"
+                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
+                      quality={75}
                     />
                   </div>
                   

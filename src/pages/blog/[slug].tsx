@@ -83,44 +83,18 @@ export default function BlogPost() {
               </Button>
             </Link>
 
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <div className="space-y-4">
-                  <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-                    {post.title}
-                  </h1>
-
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-foreground/70">
-                    <div className="flex items-center gap-2">
-                      <User className="w-4 h-4" />
-                      {post.author}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
-                      {new Date(post.created_at || "").toLocaleDateString("fr-FR", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4" />
-                      {readingTime} min de lecture
-                    </div>
-                  </div>
-                </div>
-
-                {post.image && (
-                  <div className="relative aspect-[21/9] rounded-2xl overflow-hidden">
-                    <Image
-                      src={post.image}
-                      alt={post.title}
-                      fill
-                      className="object-cover"
-                      priority
-                    />
-                  </div>
-                )}
+            <div className="max-w-4xl mx-auto space-y-8">
+              {/* Featured Image */}
+              <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden">
+                <Image
+                  src={post.image || "/641655009_122170459016861582_5624134569926200889_n.jpg"}
+                  alt={post.title}
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 768px) 100vw, 896px"
+                  quality={90}
+                />
               </div>
 
               <div className="prose prose-lg max-w-none">

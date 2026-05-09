@@ -49,6 +49,9 @@ export function Navigation() {
                 alt="Festival des Grillades"
                 fill
                 className="object-cover"
+                loading="eager"
+                sizes="64px"
+                quality={75}
               />
             </div>
             <div className="hidden md:block">

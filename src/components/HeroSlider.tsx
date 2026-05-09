@@ -67,11 +67,13 @@ export function HeroSlider() {
           {/* Current Slide */}
           <div className="absolute inset-0 transition-opacity duration-1000">
             <Image
-              src={slides[currentIndex].image}
-              alt={slides[currentIndex].title}
+              src={slides[currentSlide].image}
+              alt={slides[currentSlide].title}
               fill
               className="object-cover"
               priority
+              sizes="100vw"
+              quality={85}
             />
             <div className="absolute inset-0 bg-gradient-to-r from-foreground/90 via-foreground/70 to-foreground/50" />
           </div>

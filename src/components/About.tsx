@@ -33,13 +33,16 @@ export function About() {
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-7xl mx-auto">
           {/* Image Column */}
-          <div className="relative animate-scale-in order-2 lg:order-1">
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border-4 border-primary/20">
+          <div className="relative">
+            <div className="relative h-[400px] lg:h-[500px] rounded-2xl overflow-hidden group">
               <Image
                 src="/generated/about-grilling.png"
-                alt="Grillades traditionnelles africaines"
+                alt="L'art de la grillade africaine"
                 fill
-                className="object-cover"
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                loading="lazy"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                quality={85}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-8">

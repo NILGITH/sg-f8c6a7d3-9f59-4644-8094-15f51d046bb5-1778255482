@@ -58,8 +58,7 @@ export function Editions() {
             {editions.map((edition, index) => (
               <Card
                 key={edition.id}
-                className="group overflow-hidden hover:shadow-2xl transition-all duration-500 border-2 hover:border-primary/50 animate-scale-in bg-card"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className="group overflow-hidden hover:shadow-2xl transition-all duration-500 border-2 hover:border-primary/40 animate-scale-in stagger-1"
               >
                 <CardHeader className="p-0">
                   <div className="relative aspect-[16/10] overflow-hidden">
@@ -68,6 +67,9 @@ export function Editions() {
                       alt={edition.city}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      quality={80}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
                     
