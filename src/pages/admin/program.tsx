@@ -192,7 +192,7 @@ export default function AdminProgram() {
                     <label className="text-sm font-medium">Lieu</label>
                     <Input
                       value={editingCity?.location || ""}
-                      onChange={(e) => setEditingCity({ ...editingCity!, location: e.target.value })}
+                      onChange={(e) => setEditingCity({ ...editingCity!, location: e.target.value } as any)}
                       placeholder="Ex: Parc des Sports"
                     />
                   </div>
