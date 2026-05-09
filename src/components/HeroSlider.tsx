@@ -67,8 +67,8 @@ export function HeroSlider() {
           {/* Current Slide */}
           <div className="absolute inset-0 transition-opacity duration-1000">
             <Image
-              src={slides[currentSlide].image}
-              alt={slides[currentSlide].title}
+              src={slides[currentIndex].image}
+              alt={slides[currentIndex].title}
               fill
               className="object-cover"
               priority
