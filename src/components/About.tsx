@@ -1,128 +1,107 @@
+"use client";
+
 import Image from "next/image";
-import { Flame, Globe, MapPin, Award } from "lucide-react";
+import { Flame, Users, Award, Globe } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
 export function About() {
-  const milestones = [
-    { 
-      year: "2018", 
-      title: "Naissance à Abidjan", 
-      description: "Création du festival au cœur de Treichville" 
+  const features = [
+    {
+      icon: Flame,
+      title: "L'Art de la Grillade",
+      description: "Découvrez les techniques ancestrales et modernes de la cuisine au feu de bois, transmises de génération en génération.",
     },
-    { 
-      year: "2020", 
-      title: "Expansion régionale", 
-      description: "Premières éditions à Dakar et Cotonou" 
+    {
+      icon: Users,
+      title: "Célébration Communautaire",
+      description: "Un événement qui rassemble familles, amis et passionnés autour du partage et de la convivialité.",
     },
-    { 
-      year: "2024", 
-      title: "Rayonnement africain", 
-      description: "Le festival s'étend à Lagos et Accra" 
+    {
+      icon: Award,
+      title: "Excellence Culinaire",
+      description: "Des chefs talentueux et des grilleurs expérimentés venus de toute l'Afrique pour partager leur savoir-faire.",
     },
-    { 
-      year: "2026", 
-      title: "Dimension mondiale", 
-      description: "Paris accueille sa première édition" 
+    {
+      icon: Globe,
+      title: "Rayonnement International",
+      description: "D'Abidjan au monde entier, le festival célèbre la richesse gastronomique africaine sur tous les continents.",
     },
-  ];
-
-  const stats = [
-    { icon: Globe, value: "6+", label: "Villes hôtes" },
-    { icon: Flame, value: "150+", label: "Chefs participants" },
-    { icon: MapPin, value: "200 000+", label: "Visiteurs cumulés" },
-    { icon: Award, value: "4", label: "Pays africains" },
   ];
 
   return (
-    <section id="about" className="py-16 md:py-20 lg:py-24 bg-muted/30">
-      <div className="container">
-        <div className="max-w-6xl mx-auto space-y-12 md:space-y-16">
-          {/* Header */}
-          <div className="text-center space-y-4 animate-slide-in-left">
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
-              D'Abidjan au Monde
-            </h2>
-            <p className="text-xl md:text-2xl text-foreground/70 max-w-3xl mx-auto">
-              L'histoire d'un festival gastronomique devenu un mouvement culturel international
-            </p>
-            <div className="w-20 h-1 bg-primary mx-auto" />
-          </div>
-
-          {/* Story Section */}
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Image */}
-            <div className="animate-slide-in-right">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl hover:shadow-3xl transition-shadow duration-500">
-                <Image
-                  src="/641501809_122170458476861582_102146802286182265_n.jpg"
-                  alt="Grillades traditionnelles"
-                  fill
-                  className="object-cover hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent" />
-              </div>
-            </div>
-
-            {/* Text Content */}
-            <div className="space-y-6 animate-slide-in-left stagger-1">
-              <div className="space-y-4 text-foreground/80 text-base md:text-lg leading-relaxed">
-                <p>
-                  Né en <span className="font-semibold text-foreground">2018 à Abidjan</span>, le Festival des Grillades 
-                  est aujourd'hui la référence de la gastronomie de rue ouest-africaine. Ce qui a commencé comme une 
-                  célébration locale est devenu un événement itinérant qui rayonne sur le continent africain et au-delà.
-                </p>
-                <p>
-                  Chaque édition réunit les meilleurs maîtres grilleurs, chefs innovants et artisans culinaires autour 
-                  d'une passion commune : célébrer l'art ancestral de la grillade et les saveurs authentiques de nos terroirs.
-                </p>
-                <p>
-                  De <span className="font-semibold text-foreground">Dakar à Cotonou</span>, de{" "}
-                  <span className="font-semibold text-foreground">Lagos à Accra</span>, et bientôt à{" "}
-                  <span className="font-semibold text-foreground">Paris</span>, le festival crée des ponts entre les cultures, 
-                  les générations et les continents, tout en restant fidèle à ses racines abidjanaises.
+    <section id="about" className="py-20 md:py-28 bg-background">
+      <div className="container mx-auto px-4 md:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-7xl mx-auto">
+          {/* Image Column */}
+          <div className="relative animate-scale-in order-2 lg:order-1">
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border-4 border-primary/20">
+              <Image
+                src="/generated/about-grilling.png"
+                alt="Grillades traditionnelles africaines"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-8">
+                <p className="text-white text-lg font-semibold">
+                  La tradition de la grillade africaine
                 </p>
               </div>
             </div>
+            {/* Decorative element */}
+            <div className="absolute -top-6 -left-6 w-32 h-32 bg-primary/20 rounded-full blur-3xl -z-10" />
+            <div className="absolute -bottom-6 -right-6 w-40 h-40 bg-accent/20 rounded-full blur-3xl -z-10" />
           </div>
 
-          {/* Timeline */}
-          <div className="space-y-8">
-            <h3 className="font-serif text-2xl md:text-3xl font-bold text-center text-foreground">
-              Notre Parcours
-            </h3>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {milestones.map((milestone, index) => (
-                <div
+          {/* Content Column */}
+          <div className="space-y-8 animate-slide-in-right order-1 lg:order-2">
+            <div>
+              <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-6">
+                L'Histoire du Festival
+              </h2>
+              <div className="space-y-4 text-foreground/80 leading-relaxed">
+                <p>
+                  Né à <strong className="text-primary">Abidjan</strong>, le Festival des Grillades est devenu
+                  le rendez-vous incontournable des amateurs de cuisine au feu de bois en Afrique de l'Ouest
+                  et au-delà.
+                </p>
+                <p>
+                  Chaque année, le festival célèbre l'art ancestral de la grillade à travers des démonstrations
+                  culinaires, des compétitions entre chefs, des concerts et des animations pour toute la famille.
+                </p>
+                <p>
+                  De <strong className="text-primary">Dakar à Cotonou</strong>, en passant par{" "}
+                  <strong className="text-primary">Lagos et Accra</strong>, le festival se déploie dans les grandes
+                  capitales africaines, tout en gardant ses racines ivoiriennes bien ancrées.
+                </p>
+              </div>
+            </div>
+
+            {/* Features Grid */}
+            <div className="grid sm:grid-cols-2 gap-4 pt-4">
+              {features.map((feature, index) => (
+                <Card
                   key={index}
-                  className={`relative p-6 bg-background rounded-xl border-2 border-border hover:border-primary transition-all duration-300 hover:shadow-lg hover:-translate-y-1 animate-scale-in stagger-${index + 1}`}
+                  className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50 bg-card/50 backdrop-blur-sm"
                 >
-                  <div className="text-5xl font-bold text-primary/20 mb-2">
-                    {milestone.year}
-                  </div>
-                  <h4 className="font-semibold text-lg text-foreground mb-2">
-                    {milestone.title}
-                  </h4>
-                  <p className="text-sm text-foreground/70">
-                    {milestone.description}
-                  </p>
-                </div>
+                  <CardContent className="p-5">
+                    <div className="flex items-start gap-3">
+                      <div className="p-2.5 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                        <feature.icon className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-serif font-bold text-foreground mb-1 text-sm">
+                          {feature.title}
+                        </h3>
+                        <p className="text-foreground/70 text-xs leading-relaxed">
+                          {feature.description}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
-          </div>
-
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 pt-8">
-            {stats.map((stat, index) => (
-              <div
-                key={index}
-                className={`p-6 bg-background rounded-xl border-2 border-border hover:border-primary transition-all duration-300 hover:shadow-lg hover:-translate-y-1 text-center animate-scale-in stagger-${index + 1}`}
-              >
-                <stat.icon className="w-8 h-8 text-primary mb-3 mx-auto" />
-                <p className="text-3xl md:text-4xl font-bold text-foreground mb-1">
-                  {stat.value}
-                </p>
-                <p className="text-sm text-foreground/70">{stat.label}</p>
-              </div>
-            ))}
           </div>
         </div>
       </div>
