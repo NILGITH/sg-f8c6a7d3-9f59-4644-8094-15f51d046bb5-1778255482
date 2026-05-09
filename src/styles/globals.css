@@ -6,69 +6,73 @@
 
 @layer base {
   :root {
-    /* Palette BRAISE & GRILLADE - Mode Clair */
-    --background: 330 11% 96%;        /* Light Smoke #F5F3F4 */
-    --foreground: 210 10% 10%;        /* Charcoal #161A1D */
+    /* PALETTE BRAISE & GRILLADE - Mode Clair */
+    --background: 60 9% 98%;           /* Smoke White #FAFAF9 */
+    --foreground: 0 0% 5%;             /* Charcoal Deep #0D0D0D */
     
-    --primary: 355 78% 57%;           /* Ember Red #E63946 */
-    --primary-foreground: 0 0% 100%;  /* White */
+    --primary: 14 100% 60%;            /* Flame Orange #FF6B35 */
+    --primary-foreground: 0 0% 100%;   /* White */
     
-    --secondary: 358 72% 36%;         /* Deep Red #A4161A */
+    --secondary: 0 63% 51%;            /* Spicy Red #D32F2F */
     --secondary-foreground: 0 0% 100%; /* White */
     
-    --accent: 28 100% 48%;            /* Ember Orange #F77F00 */
-    --accent-foreground: 0 0% 100%;   /* White */
+    --accent: 27 87% 67%;              /* Golden Spice #F4A261 */
+    --accent-foreground: 0 0% 5%;      /* Charcoal Deep */
     
-    --muted: 7 7% 67%;                /* Smoke Gray #B1A7A6 */
-    --muted-foreground: 210 10% 20%;  /* Dark Charcoal */
+    --muted: 20 6% 90%;                /* Light Smoke Gray */
+    --muted-foreground: 0 0% 40%;      /* Medium Gray */
     
-    --card: 0 0% 100%;                /* White */
-    --card-foreground: 210 10% 10%;   /* Charcoal */
+    --card: 0 0% 100%;                 /* Pure White */
+    --card-foreground: 0 0% 5%;        /* Charcoal Deep */
     
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 10% 10%;
+    --popover: 0 0% 100%;              /* Pure White */
+    --popover-foreground: 0 0% 5%;     /* Charcoal Deep */
     
-    --border: 7 7% 87%;               /* Light Gray */
-    --input: 7 7% 87%;
-    --ring: 355 78% 57%;              /* Ember Red */
+    --border: 20 6% 88%;               /* Soft Gray */
+    --input: 20 6% 88%;                /* Soft Gray */
+    --ring: 14 100% 60%;               /* Flame Orange */
+    
+    --destructive: 0 84% 60%;          /* Red */
+    --destructive-foreground: 0 0% 100%; /* White */
+    
+    --golden: 27 87% 67%;              /* Golden Spice */
+    --smoke: 20 6% 90%;                /* Light Smoke */
     
     --radius: 0.5rem;
-    
-    /* Grillades accent colors */
-    --golden: 33 51% 65%;             /* Golden Brown #D4A574 */
-    --smoke: 7 7% 67%;                /* Smoke Gray */
   }
 
   .dark {
-    /* Palette BRAISE & GRILLADE - Mode Sombre */
-    --background: 210 10% 10%;        /* Charcoal #161A1D */
-    --foreground: 330 11% 96%;        /* Light Smoke */
+    /* PALETTE BRAISE & GRILLADE - Mode Sombre */
+    --background: 20 14% 10%;          /* Smoke Dark #1C1917 */
+    --foreground: 60 9% 98%;           /* Smoke White */
     
-    --primary: 355 78% 57%;           /* Ember Red #E63946 */
-    --primary-foreground: 0 0% 100%;  /* White */
+    --primary: 14 100% 60%;            /* Flame Orange */
+    --primary-foreground: 0 0% 5%;     /* Charcoal Deep */
     
-    --secondary: 28 100% 48%;         /* Ember Orange #F77F00 */
+    --secondary: 0 63% 51%;            /* Spicy Red */
     --secondary-foreground: 0 0% 100%; /* White */
     
-    --accent: 33 51% 65%;             /* Golden Brown #D4A574 */
-    --accent-foreground: 210 10% 10%; /* Dark */
+    --accent: 27 87% 67%;              /* Golden Spice */
+    --accent-foreground: 0 0% 5%;      /* Charcoal Deep */
     
-    --muted: 210 10% 20%;             /* Dark Gray */
-    --muted-foreground: 7 7% 67%;     /* Smoke Gray */
+    --muted: 20 14% 18%;               /* Dark Smoke Gray */
+    --muted-foreground: 20 6% 70%;     /* Light Gray */
     
-    --card: 210 10% 15%;              /* Dark Card */
-    --card-foreground: 330 11% 96%;   /* Light Smoke */
+    --card: 20 14% 13%;                /* Darker Card */
+    --card-foreground: 60 9% 98%;      /* Smoke White */
     
-    --popover: 210 10% 15%;
-    --popover-foreground: 330 11% 96%;
+    --popover: 20 14% 13%;             /* Darker Popover */
+    --popover-foreground: 60 9% 98%;   /* Smoke White */
     
-    --border: 210 10% 25%;            /* Dark Border */
-    --input: 210 10% 25%;
-    --ring: 355 78% 57%;              /* Ember Red */
+    --border: 20 14% 20%;              /* Dark Border */
+    --input: 20 14% 20%;               /* Dark Input */
+    --ring: 14 100% 60%;               /* Flame Orange */
     
-    /* Grillades accent colors */
-    --golden: 33 51% 65%;
-    --smoke: 7 7% 67%;
+    --destructive: 0 63% 51%;          /* Spicy Red */
+    --destructive-foreground: 0 0% 100%; /* White */
+    
+    --golden: 27 87% 67%;              /* Golden Spice */
+    --smoke: 20 14% 18%;               /* Dark Smoke */
   }
 }
 
@@ -76,71 +80,96 @@
   * {
     @apply border-border;
   }
+  
   body {
     @apply bg-background text-foreground font-sans;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+  
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
   }
 }
 
 @layer utilities {
+  /* Animations personnalisées */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
   .animate-fade-in {
-    animation: fadeIn 0.6s ease-out forwards;
+    animation: fade-in 0.6s ease-out;
   }
-  
+
   .animate-slide-up {
-    animation: slideUp 0.8s ease-out forwards;
+    animation: slide-up 0.8s ease-out;
   }
-  
+
   .animate-scale-in {
-    animation: scaleIn 0.5s ease-out forwards;
+    animation: scale-in 0.5s ease-out;
   }
-  
+
+  .animate-slide-in-right {
+    animation: slide-in-right 0.6s ease-out;
+  }
+
   .animate-float {
     animation: float 3s ease-in-out infinite;
   }
-  
+
+  /* Décalage pour effets d'apparition séquentiels */
   .stagger-1 { animation-delay: 0.1s; }
   .stagger-2 { animation-delay: 0.2s; }
   .stagger-3 { animation-delay: 0.3s; }
   .stagger-4 { animation-delay: 0.4s; }
   .stagger-5 { animation-delay: 0.5s; }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
 }
