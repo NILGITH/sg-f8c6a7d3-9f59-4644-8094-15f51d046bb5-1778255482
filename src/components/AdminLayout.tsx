@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { LayoutDashboard, Calendar, Image, Ticket, BookOpen, LogOut, Users, MapPin } from "lucide-react";
+import { LayoutDashboard, Calendar, Image, Ticket, BookOpen, LogOut, Users, MapPin, Presentation } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -16,6 +16,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
   const navItems = [
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/admin/slider", label: "Slider Hero", icon: Presentation },
     { href: "/admin/editions", label: "Éditions", icon: MapPin },
     { href: "/admin/program", label: "Programme", icon: Calendar },
     { href: "/admin/gallery", label: "Galerie", icon: Image },

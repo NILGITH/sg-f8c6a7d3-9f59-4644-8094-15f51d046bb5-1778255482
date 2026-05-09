@@ -1,6 +1,6 @@
 ---
 title: Adapter palette selon logo et créer slider Hero
-status: todo
+status: done
 priority: urgent
 type: feature
 tags: [design, hero, slider, admin]
@@ -13,13 +13,13 @@ position: 9
 Analyser les couleurs du logo du festival et adapter toute la palette du site. Créer un slider dynamique sur le Hero avec gestion admin complète pour ajouter/modifier/supprimer des slides.
 
 ## Checklist
-- [ ] Analyser le logo et extraire la palette de couleurs
-- [ ] Mettre à jour globals.css avec nouvelles couleurs basées sur le logo
-- [ ] Créer composant HeroSlider.tsx avec animations
-- [ ] Créer page admin/slider.tsx pour gérer les slides
-- [ ] Créer public/data/slider.json
-- [ ] Intégrer le slider dans Hero en conservant les animations
-- [ ] Ajouter lien dans navigation admin
+- [x] Analyser le logo et extraire la palette de couleurs
+- [x] Mettre à jour globals.css avec nouvelles couleurs basées sur le logo
+- [x] Créer composant HeroSlider.tsx avec animations
+- [x] Créer page admin/slider.tsx pour gérer les slides
+- [x] Créer public/data/slider.json
+- [x] Intégrer le slider dans Hero en conservant les animations
+- [x] Ajouter lien dans navigation admin
 
 ## Acceptance
 - La palette du site reflète les couleurs du logo
