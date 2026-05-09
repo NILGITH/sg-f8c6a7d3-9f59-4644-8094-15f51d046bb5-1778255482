@@ -42,44 +42,37 @@ export function Footer() {
     },
   ];
 
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer id="contact" className="bg-foreground text-background pt-16 pb-8">
-      <div className="container">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-          {/* Brand */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="relative w-12 h-12">
-                <Image
-                  src="/logo-festival.jpg"
-                  alt="Festival des Grillades"
-                  fill
-                  className="object-contain"
-                />
+    <footer className="bg-foreground text-background py-16 md:py-20">
+      <div className="container mx-auto px-4 md:px-6 lg:px-8">
+        {/* Main Grid - Centered with max-width */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 max-w-7xl mx-auto mb-12">
+          {/* Festival Branding */}
+          <div className="space-y-4 lg:col-span-1">
+            <Link href="/" className="inline-block group">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-primary/30 group-hover:ring-primary/60 transition-all">
+                  <Image
+                    src="/logo-festival.jpg"
+                    alt="Festival des Grillades"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div>
+                  <h3 className="font-serif text-xl font-bold text-background group-hover:text-primary transition-colors">
+                    Festival des Grillades
+                  </h3>
+                  <p className="text-sm text-background/70">D'Abidjan au Monde</p>
+                </div>
               </div>
-              <span className="font-serif text-xl font-bold">Festival des Grillades</span>
-            </div>
-            <p className="text-background/70 leading-relaxed">
-              Festival gastronomique itinérant célébrant l'art de la grillade africaine. 
-              Né à Abidjan, présent dans les capitales d'Afrique et au-delà.
+            </Link>
+            <p className="text-background/80 text-sm leading-relaxed">
+              Célébration gastronomique itinérante née à Abidjan, promouvant la culture culinaire
+              des grillades d'Afrique de l'Ouest.
             </p>
-            <div className="flex gap-4">
-              {socialLinks.map((social, index) => {
-                const Icon = social.icon;
-                return (
-                  <a
-                    key={index}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 bg-background/10 hover:bg-primary rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
-                    aria-label={social.label}
-                  >
-                    <Icon className="w-5 h-5" />
-                  </a>
-                );
-              })}
-            </div>
           </div>
 
           {/* Quick Links */}
@@ -160,7 +153,7 @@ export function Footer() {
 
         {/* Bottom */}
         <div className="pt-8 border-t border-background/20 flex flex-col md:flex-row justify-between items-center gap-4 text-background/60 text-sm">
-          <p>© {new Date().getFullYear()} Festival des Grillades. Abidjan, Côte d'Ivoire. Tous droits réservés.</p>
+          <p>© {currentYear} Festival des Grillades. Abidjan, Côte d'Ivoire. Tous droits réservés.</p>
           <div className="flex gap-6">
             <Link href="#" className="hover:text-primary transition-colors duration-300">
               Mentions légales

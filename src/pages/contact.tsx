@@ -65,23 +65,21 @@ export default function Contact() {
       <Navigation />
       <main>
         <section className="py-20 md:py-24 bg-gradient-to-b from-muted/30 to-background">
-          <div className="container">
-            <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16 space-y-4 animate-fade-in">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-4">
-                <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-                <span className="text-sm font-semibold text-primary uppercase tracking-wider">
-                  Contactez-nous
-                </span>
-              </div>
-              <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground">
+          <div className="container mx-auto px-4 md:px-6 lg:px-8">
+            {/* Header - Centered */}
+            <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+              <Badge className="mb-2">Contact & Réservation</Badge>
+              <h1 className="font-serif text-4xl md:text-5xl font-bold text-foreground">
                 Réservez Votre Place
               </h1>
               <p className="text-lg text-foreground/70">
-                Rejoignez-nous pour une expérience gastronomique inoubliable
+                Choisissez votre ville et réservez vos billets pour vivre une expérience
+                gastronomique inoubliable
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
+            {/* Content Grid - Centered with max-width */}
+            <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
               <div className="space-y-6 animate-slide-in-left">
                 <Card className="border-2 hover:shadow-lg transition-shadow">
                   <CardContent className="p-6 space-y-6">

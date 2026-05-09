@@ -44,7 +44,8 @@ export default function BlogPage() {
       <Navigation />
       <main>
         <section className="py-20 bg-gradient-to-b from-muted/30 to-background">
-          <div className="container">
+          <div className="container mx-auto px-4 md:px-6 lg:px-8">
+            {/* Header - Centered with max-width */}
             <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
               <h1 className="font-serif text-4xl md:text-5xl font-bold text-foreground">
                 Blog du Festival
@@ -62,7 +63,8 @@ export default function BlogPage() {
                 Aucun article publié pour le moment. Revenez bientôt !
               </div>
             ) : (
-              <>
+              <div className="max-w-7xl mx-auto">
+                {/* Featured Post */}
                 {featuredPost && (
                   <Link href={`/blog/${featuredPost.slug}`}>
                     <Card className="mb-12 overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer border-2">
@@ -143,7 +145,7 @@ export default function BlogPage() {
                     </Link>
                   ))}
                 </div>
-              </>
+              </div>
             )}
           </div>
         </section>
