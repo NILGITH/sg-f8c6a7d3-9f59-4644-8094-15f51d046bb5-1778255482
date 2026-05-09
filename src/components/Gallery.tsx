@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
-import { galleryService, type Gallery as GalleryImage } from "@/services/galleryService";
+import { galleryService, type GalleryItem as GalleryImage } from "@/services/galleryService";
 
 export function Gallery() {
   const [images, setImages] = useState<GalleryImage[]>([]);

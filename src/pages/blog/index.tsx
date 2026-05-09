@@ -29,8 +29,8 @@ export default function BlogPage() {
   };
 
   const publishedPosts = posts
-    .filter((post) => post.status === "published")
-    .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
+    .filter((post) => post.published)
+    .sort((a, b) => new Date(b.created_at || "").getTime() - new Date(a.created_at || "").getTime());
 
   const featuredPost = publishedPosts[0];
   const otherPosts = publishedPosts.slice(1);
@@ -69,7 +69,7 @@ export default function BlogPage() {
                       <div className="grid md:grid-cols-2">
                         <div className="relative aspect-[16/10] md:aspect-auto">
                           <Image
-                            src={featuredPost.cover_image}
+                            src={featuredPost.image || "/641655009_122170459016861582_5624134569926200889_n.jpg"}
                             alt={featuredPost.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -92,7 +92,7 @@ export default function BlogPage() {
                             </div>
                             <div className="flex items-center gap-2">
                               <Calendar className="w-4 h-4" />
-                              {new Date(featuredPost.published_at).toLocaleDateString("fr-FR", {
+                              {new Date(featuredPost.created_at || "").toLocaleDateString("fr-FR", {
                                 year: "numeric",
                                 month: "long",
                                 day: "numeric",
@@ -115,21 +115,14 @@ export default function BlogPage() {
                       <Card className="h-full overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer">
                         <div className="relative aspect-[16/10]">
                           <Image
-                            src={post.cover_image}
+                            src={post.image || "/641655009_122170459016861582_5624134569926200889_n.jpg"}
                             alt={post.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                         </div>
                         <CardContent className="p-6">
-                          <div className="flex flex-wrap gap-2 mb-3">
-                            {post.tags && post.tags.slice(0, 2).map((tag: string) => (
-                              <Badge key={tag} variant="secondary" className="text-xs">
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-                          <h3 className="font-serif text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
+                          <h3 className="font-serif text-xl font-bold text-foreground mb-3 mt-3 group-hover:text-primary transition-colors">
                             {post.title}
                           </h3>
                           <p className="text-foreground/70 text-sm mb-4 line-clamp-2">
@@ -142,7 +135,7 @@ export default function BlogPage() {
                             </div>
                             <div className="flex items-center gap-1">
                               <Calendar className="w-3 h-3" />
-                              {new Date(post.published_at).toLocaleDateString("fr-FR")}
+                              {new Date(post.created_at || "").toLocaleDateString("fr-FR")}
                             </div>
                           </div>
                         </CardContent>
