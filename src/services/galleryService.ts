@@ -3,19 +3,26 @@ import type { Tables } from "@/integrations/supabase/types";
 
 export type GalleryItem = Tables<"gallery">;
 
-// Helper pour construire les URLs publiques depuis Supabase Storage
+// Helper pour construire les URLs publiques
 function getPublicUrl(imagePath: string): string {
   // Si c'est déjà une URL complète (http/https ou data:), la retourner telle quelle
   if (imagePath.startsWith('http') || imagePath.startsWith('data:')) {
+    console.log("✅ Already a full URL:", imagePath);
     return imagePath;
   }
   
-  // Sinon, construire l'URL publique Supabase Storage
+  // Si c'est un chemin local Next.js (commence par /), le retourner tel quel
+  if (imagePath.startsWith('/')) {
+    console.log("✅ Local Next.js path:", imagePath);
+    return imagePath;
+  }
+  
+  // Sinon, c'est un chemin Supabase Storage, construire l'URL publique
   const { data } = supabase.storage
     .from('gallery')
     .getPublicUrl(imagePath);
   
-  console.log("🔗 Converted path to URL:", { imagePath, publicUrl: data.publicUrl });
+  console.log("🔗 Converted Supabase Storage path:", { imagePath, publicUrl: data.publicUrl });
   return data.publicUrl;
 }
 
