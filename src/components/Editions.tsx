@@ -95,13 +95,7 @@ export function Editions() {
                   {/* Dates */}
                   <div className="flex items-center gap-2 text-foreground/70">
                     <Calendar className="w-4 h-4 text-primary" />
-                    <span className="text-sm font-medium">{edition.dates}</span>
-                  </div>
-
-                  {/* Participants */}
-                  <div className="flex items-center gap-2 text-foreground/70">
-                    <Users className="w-4 h-4 text-primary" />
-                    <span className="text-sm">{edition.participants} participants attendus</span>
+                    <span className="text-sm font-medium">{edition.date}</span>
                   </div>
 
                   {/* Description */}
