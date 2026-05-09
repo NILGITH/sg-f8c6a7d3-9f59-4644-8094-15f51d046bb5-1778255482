@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Flame } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useContentManager } from "@/hooks/useContentManager";
 
@@ -79,10 +79,15 @@ export function HeroSlider() {
       {/* Content */}
       <div className="container relative z-10">
         <div className="max-w-3xl space-y-6 md:space-y-8">
-          {/* Flame Icon */}
+          {/* Logo */}
           <div className="animate-fade-in">
-            <div className="inline-flex p-3 md:p-4 bg-primary rounded-full animate-float">
-              <Flame className="w-8 h-8 md:w-12 md:h-12 text-white" />
+            <div className="relative w-20 h-20 md:w-28 md:h-28 animate-float">
+              <Image
+                src="/logo-festival.jpg"
+                alt="Festival des Grillades"
+                fill
+                className="object-contain drop-shadow-2xl"
+              />
             </div>
           </div>
 

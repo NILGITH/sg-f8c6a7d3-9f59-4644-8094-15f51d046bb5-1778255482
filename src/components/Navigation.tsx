@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Flame, Menu, X } from "lucide-react";
+import Image from "next/image";
+import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -40,16 +41,21 @@ export function Navigation() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-background/95 backdrop-blur-md shadow-lg"
-          : "bg-background/90 backdrop-blur-sm"
+          ? "bg-white shadow-lg"
+          : "bg-white/95 backdrop-blur-sm"
       }`}
     >
       <div className="container">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 md:gap-3 group">
-            <div className="p-1.5 md:p-2 bg-primary rounded-lg group-hover:scale-110 transition-transform duration-300 group-hover:rotate-12">
-              <Flame className="w-5 h-5 md:w-6 md:h-6 text-white" />
+            <div className="relative w-12 h-12 md:w-14 md:h-14 group-hover:scale-110 transition-transform duration-300">
+              <Image
+                src="/logo-festival.jpg"
+                alt="Festival des Grillades"
+                fill
+                className="object-contain"
+              />
             </div>
             <span className="font-serif text-base md:text-xl font-bold text-foreground hidden sm:block">
               Festival des Grillades
@@ -103,7 +109,7 @@ export function Navigation() {
 
         {/* Mobile Menu */}
         <div
-          className={`fixed top-16 right-0 h-[calc(100vh-4rem)] w-72 bg-background shadow-2xl md:hidden transform transition-transform duration-300 ease-out ${
+          className={`fixed top-16 right-0 h-[calc(100vh-4rem)] w-72 bg-white shadow-2xl md:hidden transform transition-transform duration-300 ease-out ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
