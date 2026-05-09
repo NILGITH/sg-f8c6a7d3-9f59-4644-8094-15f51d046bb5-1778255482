@@ -1,28 +1,30 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { MapPin, Calendar, ArrowRight, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useContentManager } from "@/hooks/useContentManager";
-
-interface Edition {
-  id: string;
-  city: string;
-  country: string;
-  date: string;
-  status: "upcoming" | "past";
-  description: string;
-  image: string;
-  isOrigin: boolean;
-}
-
-interface EditionsData {
-  editions: Edition[];
-}
+import { editionsService, type Edition } from "@/services/editionsService";
 
 export function Editions() {
-  const { data, isLoading } = useContentManager<EditionsData>("editions", { editions: [] });
+  const [editions, setEditions] = useState<Edition[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    loadEditions();
+  }, []);
+
+  const loadEditions = async () => {
+    try {
+      const data = await editionsService.getAll();
+      setEditions(data);
+    } catch (error) {
+      console.error("Error loading editions:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -34,12 +36,12 @@ export function Editions() {
     );
   }
 
-  if (data.editions.length === 0) {
+  if (editions.length === 0) {
     return null;
   }
 
   const getStatusBadge = (edition: Edition) => {
-    if (edition.isOrigin) {
+    if (edition.is_origin) {
       return (
         <Badge className="bg-primary text-white border-none">
           <Flame className="w-3 h-3 mr-1" />
@@ -80,7 +82,7 @@ export function Editions() {
 
           {/* Editions Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {data.editions.map((edition, index) => (
+            {editions.map((edition, index) => (
               <div
                 key={edition.id}
                 className={`group relative bg-background rounded-2xl border-2 border-border hover:border-primary transition-all duration-300 overflow-hidden hover:shadow-2xl hover:-translate-y-2 animate-scale-in stagger-${(index % 3) + 1}`}
@@ -88,7 +90,7 @@ export function Editions() {
                 {/* Image */}
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
-                    src={edition.image}
+                    src={edition.image || "/641655009_122170459016861582_5624134569926200889_n.jpg"}
                     alt={`${edition.city} ${edition.country}`}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
@@ -124,11 +126,7 @@ export function Editions() {
                   {/* Date */}
                   <div className="flex items-center gap-2 text-sm font-medium text-foreground/80">
                     <Calendar className="w-4 h-4 text-primary" />
-                    {new Date(edition.date).toLocaleDateString("fr-FR", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
+                    {edition.date}
                   </div>
 
                   {/* CTA */}

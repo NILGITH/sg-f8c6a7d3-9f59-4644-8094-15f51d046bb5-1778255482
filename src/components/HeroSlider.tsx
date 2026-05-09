@@ -5,60 +5,56 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useContentManager } from "@/hooks/useContentManager";
-
-interface Slide {
-  id: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  image: string;
-  ctaText: string;
-  ctaLink: string;
-  order: number;
-  isActive: boolean;
-}
-
-interface SliderData {
-  slides: Slide[];
-}
+import { sliderService, type Slider } from "@/services/sliderService";
 
 export function HeroSlider() {
-  const { data, isLoading } = useContentManager<SliderData>("slider", { slides: [] });
+  const [slides, setSlides] = useState<Slider[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const activeSlides = data.slides
-    .filter((slide) => slide.isActive)
-    .sort((a, b) => a.order - b.order);
+  useEffect(() => {
+    loadSlides();
+  }, []);
+
+  const loadSlides = async () => {
+    try {
+      const data = await sliderService.getAll();
+      setSlides(data);
+    } catch (error) {
+      console.error("Error loading slides:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (activeSlides.length === 0) return;
+    if (slides.length === 0) return;
 
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % activeSlides.length);
+      setCurrentIndex((prev) => (prev + 1) % slides.length);
     }, 6000);
 
     return () => clearInterval(interval);
-  }, [activeSlides.length]);
+  }, [slides.length]);
 
   const handlePrevious = () => {
-    setCurrentIndex((prev) => (prev - 1 + activeSlides.length) % activeSlides.length);
+    setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % activeSlides.length);
+    setCurrentIndex((prev) => (prev + 1) % slides.length);
   };
 
-  if (isLoading || activeSlides.length === 0) {
+  if (isLoading || slides.length === 0) {
     return null;
   }
 
-  const currentSlide = activeSlides[currentIndex];
+  const currentSlide = slides[currentIndex];
 
   return (
     <section className="relative min-h-[85vh] lg:min-h-[90vh] flex items-center overflow-hidden">
       {/* Background Images */}
-      {activeSlides.map((slide, index) => (
+      {slides.map((slide, index) => (
         <div
           key={slide.id}
           className={`absolute inset-0 transition-opacity duration-1000 ${
@@ -66,7 +62,7 @@ export function HeroSlider() {
           }`}
         >
           <Image
-            src={slide.image}
+            src={slide.image || "/641655009_122170459016861582_5624134569926200889_n.jpg"}
             alt={slide.title}
             fill
             className="object-cover"
@@ -122,23 +118,25 @@ export function HeroSlider() {
           )}
 
           {/* CTA Button */}
-          <div
-            key={`cta-${currentSlide.id}`}
-            className="flex flex-col sm:flex-row gap-4 animate-slide-up stagger-3"
-          >
-            <Button
-              asChild
-              size="lg"
-              className="bg-primary hover:bg-primary/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 w-full sm:w-auto text-base md:text-lg px-6 md:px-8 py-5 md:py-6"
+          {currentSlide.cta_text && currentSlide.cta_link && (
+            <div
+              key={`cta-${currentSlide.id}`}
+              className="flex flex-col sm:flex-row gap-4 animate-slide-up stagger-3"
             >
-              <Link href={currentSlide.ctaLink}>{currentSlide.ctaText}</Link>
-            </Button>
-          </div>
+              <Button
+                asChild
+                size="lg"
+                className="bg-primary hover:bg-primary/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 w-full sm:w-auto text-base md:text-lg px-6 md:px-8 py-5 md:py-6"
+              >
+                <Link href={currentSlide.cta_link}>{currentSlide.cta_text}</Link>
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Navigation Controls */}
-      {activeSlides.length > 1 && (
+      {slides.length > 1 && (
         <>
           <button
             onClick={handlePrevious}
@@ -158,7 +156,7 @@ export function HeroSlider() {
 
           {/* Indicators */}
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-            {activeSlides.map((_, index) => (
+            {slides.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
