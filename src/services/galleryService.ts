@@ -3,6 +3,22 @@ import type { Tables } from "@/integrations/supabase/types";
 
 export type GalleryItem = Tables<"gallery">;
 
+// Helper pour construire les URLs publiques depuis Supabase Storage
+function getPublicUrl(imagePath: string): string {
+  // Si c'est déjà une URL complète (http/https ou data:), la retourner telle quelle
+  if (imagePath.startsWith('http') || imagePath.startsWith('data:')) {
+    return imagePath;
+  }
+  
+  // Sinon, construire l'URL publique Supabase Storage
+  const { data } = supabase.storage
+    .from('gallery')
+    .getPublicUrl(imagePath);
+  
+  console.log("🔗 Converted path to URL:", { imagePath, publicUrl: data.publicUrl });
+  return data.publicUrl;
+}
+
 export const galleryService = {
   async getAll() {
     console.log("📡 Fetching gallery from Supabase...");
@@ -18,8 +34,18 @@ export const galleryService = {
       return [];
     }
 
-    console.log("✅ Gallery items count:", data?.length || 0);
-    return data || [];
+    // Transformer les chemins en URLs publiques
+    const imagesWithPublicUrls = (data || []).map(item => ({
+      ...item,
+      image: getPublicUrl(item.image)
+    }));
+
+    console.log("✅ Gallery items count:", imagesWithPublicUrls.length);
+    if (imagesWithPublicUrls.length > 0) {
+      console.log("🖼️ First image URL:", imagesWithPublicUrls[0].image);
+    }
+    
+    return imagesWithPublicUrls;
   },
 
   async create(item: Omit<GalleryItem, "id" | "created_at">) {
