@@ -84,7 +84,7 @@ export function Gallery() {
                 return (
                   <div
                     key={image.id}
-                    className={`${spanClasses} relative overflow-hidden rounded-xl group cursor-pointer animate-scale-in stagger-${Math.min(index + 1, 5)}`}
+                    className={`${spanClasses} relative overflow-hidden rounded-xl group cursor-pointer animate-scale-in stagger-${Math.min(index + 1, 5)} aspect-[4/3]`}
                     onClick={() => setSelectedImage(index)}
                   >
                     <Image
