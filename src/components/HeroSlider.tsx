@@ -45,12 +45,6 @@ export function HeroSlider() {
     setCurrentIndex((prev) => (prev + 1) % slides.length);
   };
 
-  if (isLoading || slides.length === 0) {
-    return null;
-  }
-
-  const currentSlide = slides[currentIndex];
-
   return (
     <section className="relative min-h-[85vh] lg:min-h-[90vh] flex items-center overflow-hidden bg-foreground">
       {isLoading ? (
@@ -73,8 +67,8 @@ export function HeroSlider() {
           {/* Current Slide */}
           <div className="absolute inset-0 transition-opacity duration-1000">
             <Image
-              src={slides[currentSlide].image}
-              alt={slides[currentSlide].title}
+              src={slides[currentIndex].image}
+              alt={slides[currentIndex].title}
               fill
               className="object-cover"
               priority
@@ -99,38 +93,38 @@ export function HeroSlider() {
 
               {/* Main Title */}
               <h1
-                key={`title-${currentSlide.id}`}
+                key={`title-${slides[currentIndex].id}`}
                 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight animate-slide-up"
               >
-                {currentSlide.title}
+                {slides[currentIndex].title}
               </h1>
 
               {/* Subtitle */}
-              {currentSlide.subtitle && (
+              {slides[currentIndex].subtitle && (
                 <div
-                  key={`subtitle-${currentSlide.id}`}
+                  key={`subtitle-${slides[currentIndex].id}`}
                   className="animate-slide-up stagger-1"
                 >
                   <p className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold text-primary mb-2">
-                    {currentSlide.subtitle}
+                    {slides[currentIndex].subtitle}
                   </p>
                 </div>
               )}
 
               {/* Description */}
-              {currentSlide.description && (
+              {slides[currentIndex].description && (
                 <p
-                  key={`desc-${currentSlide.id}`}
+                  key={`desc-${slides[currentIndex].id}`}
                   className="text-lg sm:text-xl md:text-2xl text-white/90 leading-relaxed max-w-2xl animate-slide-up stagger-2"
                 >
-                  {currentSlide.description}
+                  {slides[currentIndex].description}
                 </p>
               )}
 
               {/* CTA Button */}
-              {currentSlide.cta_text && currentSlide.cta_link && (
+              {slides[currentIndex].cta_text && slides[currentIndex].cta_link && (
                 <div
-                  key={`cta-${currentSlide.id}`}
+                  key={`cta-${slides[currentIndex].id}`}
                   className="flex flex-col sm:flex-row gap-4 animate-slide-up stagger-3"
                 >
                   <Button
@@ -138,7 +132,7 @@ export function HeroSlider() {
                     size="lg"
                     className="bg-primary hover:bg-primary/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 w-full sm:w-auto text-base md:text-lg px-6 md:px-8 py-5 md:py-6"
                   >
-                    <Link href={currentSlide.cta_link}>{currentSlide.cta_text}</Link>
+                    <Link href={slides[currentIndex].cta_link}>{slides[currentIndex].cta_text}</Link>
                   </Button>
                 </div>
               )}
@@ -182,7 +176,7 @@ export function HeroSlider() {
             </>
           )}
         </>
-      ) : null}
+      )}
     </section>
   );
 }
