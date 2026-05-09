@@ -1,36 +1,36 @@
+import { useState, useEffect } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useContentManager } from "@/hooks/useContentManager";
 import { Calendar, User, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
-interface BlogPost {
-  id: string;
-  slug: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  coverImage: string;
-  author: string;
-  publishedAt: string;
-  status: "published" | "draft";
-  tags: string[];
-}
-
-interface BlogData {
-  posts: BlogPost[];
-}
+import { blogService, type BlogPost } from "@/services/blogService";
 
 export default function BlogPage() {
-  const { data, isLoading } = useContentManager<BlogData>("blog", { posts: [] });
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const publishedPosts = data.posts
+  useEffect(() => {
+    loadPosts();
+  }, []);
+
+  const loadPosts = async () => {
+    try {
+      const data = await blogService.getAll();
+      setPosts(data);
+    } catch (error) {
+      console.error("Error loading posts:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const publishedPosts = posts
     .filter((post) => post.status === "published")
-    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+    .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
 
   const featuredPost = publishedPosts[0];
   const otherPosts = publishedPosts.slice(1);
@@ -69,7 +69,7 @@ export default function BlogPage() {
                       <div className="grid md:grid-cols-2">
                         <div className="relative aspect-[16/10] md:aspect-auto">
                           <Image
-                            src={featuredPost.coverImage}
+                            src={featuredPost.cover_image}
                             alt={featuredPost.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -92,7 +92,7 @@ export default function BlogPage() {
                             </div>
                             <div className="flex items-center gap-2">
                               <Calendar className="w-4 h-4" />
-                              {new Date(featuredPost.publishedAt).toLocaleDateString("fr-FR", {
+                              {new Date(featuredPost.published_at).toLocaleDateString("fr-FR", {
                                 year: "numeric",
                                 month: "long",
                                 day: "numeric",
@@ -115,7 +115,7 @@ export default function BlogPage() {
                       <Card className="h-full overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer">
                         <div className="relative aspect-[16/10]">
                           <Image
-                            src={post.coverImage}
+                            src={post.cover_image}
                             alt={post.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -123,7 +123,7 @@ export default function BlogPage() {
                         </div>
                         <CardContent className="p-6">
                           <div className="flex flex-wrap gap-2 mb-3">
-                            {post.tags.slice(0, 2).map((tag) => (
+                            {post.tags && post.tags.slice(0, 2).map((tag: string) => (
                               <Badge key={tag} variant="secondary" className="text-xs">
                                 {tag}
                               </Badge>
@@ -142,7 +142,7 @@ export default function BlogPage() {
                             </div>
                             <div className="flex items-center gap-1">
                               <Calendar className="w-3 h-3" />
-                              {new Date(post.publishedAt).toLocaleDateString("fr-FR")}
+                              {new Date(post.published_at).toLocaleDateString("fr-FR")}
                             </div>
                           </div>
                         </CardContent>

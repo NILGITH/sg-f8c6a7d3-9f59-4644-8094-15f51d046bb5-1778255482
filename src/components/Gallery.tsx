@@ -1,24 +1,29 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { useContentManager } from "@/hooks/useContentManager";
+import { useState, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
-
-interface GalleryImage {
-  id: string;
-  src: string;
-  alt: string;
-  span: string;
-}
-
-interface GalleryData {
-  images: GalleryImage[];
-}
+import { galleryService, type Gallery as GalleryImage } from "@/services/galleryService";
 
 export function Gallery() {
-  const { data, isLoading } = useContentManager<GalleryData>("gallery", { images: [] });
+  const [images, setImages] = useState<GalleryImage[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+
+  useEffect(() => {
+    loadGallery();
+  }, []);
+
+  const loadGallery = async () => {
+    try {
+      const data = await galleryService.getAll();
+      setImages(data);
+    } catch (error) {
+      console.error("Error loading gallery:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -37,7 +42,7 @@ export function Gallery() {
   };
 
   const handleNext = () => {
-    if (selectedImage !== null && selectedImage < data.images.length - 1) {
+    if (selectedImage !== null && selectedImage < images.length - 1) {
       setSelectedImage(selectedImage + 1);
     }
   };
@@ -75,8 +80,7 @@ export function Gallery() {
 
           {/* Masonry Gallery Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-[200px] gap-3 md:gap-4">
-            {data.images.map((image, index) => {
-              // Dynamic span classes for masonry effect
+            {images.map((image, index) => {
               const spanClasses = image.span || "col-span-1 row-span-1";
               
               return (
@@ -85,21 +89,18 @@ export function Gallery() {
                   className={`${spanClasses} relative overflow-hidden rounded-xl group cursor-pointer animate-scale-in stagger-${Math.min(index + 1, 5)}`}
                   onClick={() => setSelectedImage(index)}
                 >
-                  {/* Image */}
                   <Image
-                    src={image.src}
-                    alt={image.alt}
+                    src={image.image}
+                    alt={image.title}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-125"
                   />
 
-                  {/* Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
 
-                  {/* Content on Hover */}
                   <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-6 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
                     <p className="text-white text-sm md:text-base font-medium line-clamp-2 mb-2">
-                      {image.alt}
+                      {image.title}
                     </p>
                     <div className="flex items-center gap-2 text-white/80 text-xs md:text-sm">
                       <ZoomIn className="w-4 h-4" />
@@ -107,13 +108,12 @@ export function Gallery() {
                     </div>
                   </div>
 
-                  {/* Corner Accent */}
                   <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
               );
             })}
 
-            {data.images.length === 0 && (
+            {images.length === 0 && (
               <div className="col-span-full text-center py-20">
                 <div className="inline-flex flex-col items-center gap-4 p-8 bg-muted/50 rounded-2xl">
                   <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
@@ -125,11 +125,10 @@ export function Gallery() {
             )}
           </div>
 
-          {/* View More */}
-          {data.images.length > 0 && (
+          {images.length > 0 && (
             <div className="text-center mt-12 md:mt-16 animate-slide-up">
               <p className="text-sm text-foreground/60 mb-4">
-                {data.images.length} photo{data.images.length > 1 ? "s" : ""} disponible{data.images.length > 1 ? "s" : ""}
+                {images.length} photo{images.length > 1 ? "s" : ""} disponible{images.length > 1 ? "s" : ""}
               </p>
               <div className="inline-flex items-center gap-2 text-sm text-foreground/70">
                 <div className="w-12 h-px bg-gradient-to-r from-transparent to-border" />
@@ -145,7 +144,6 @@ export function Gallery() {
       {selectedImage !== null && (
         <div className="fixed inset-0 z-[100] bg-foreground/95 backdrop-blur-md animate-fade-in">
           <div className="absolute inset-0 flex items-center justify-center p-4">
-            {/* Close Button */}
             <button
               onClick={() => setSelectedImage(null)}
               className="absolute top-4 right-4 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-all duration-300 hover:scale-110 z-10"
@@ -154,7 +152,6 @@ export function Gallery() {
               <X className="w-6 h-6" />
             </button>
 
-            {/* Previous Button */}
             {selectedImage > 0 && (
               <button
                 onClick={handlePrevious}
@@ -165,8 +162,7 @@ export function Gallery() {
               </button>
             )}
 
-            {/* Next Button */}
-            {selectedImage < data.images.length - 1 && (
+            {selectedImage < images.length - 1 && (
               <button
                 onClick={handleNext}
                 className="absolute right-4 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-all duration-300 hover:scale-110 z-10"
@@ -176,29 +172,26 @@ export function Gallery() {
               </button>
             )}
 
-            {/* Image */}
             <div className="relative w-full h-full max-w-6xl max-h-[90vh] animate-scale-in">
               <Image
-                src={data.images[selectedImage].src}
-                alt={data.images[selectedImage].alt}
+                src={images[selectedImage].image}
+                alt={images[selectedImage].title}
                 fill
                 className="object-contain"
                 priority
               />
               
-              {/* Image Caption */}
               <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-foreground/90 to-transparent">
                 <p className="text-white text-center text-lg font-medium">
-                  {data.images[selectedImage].alt}
+                  {images[selectedImage].title}
                 </p>
                 <p className="text-white/70 text-center text-sm mt-2">
-                  {selectedImage + 1} / {data.images.length}
+                  {selectedImage + 1} / {images.length}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Keyboard Hints */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-6 text-white/60 text-xs">
             <div className="flex items-center gap-2">
               <kbd className="px-2 py-1 bg-white/10 rounded">ESC</kbd>
