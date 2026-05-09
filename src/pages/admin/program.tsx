@@ -61,7 +61,6 @@ export default function AdminProgram() {
       city_id: "",
       city: "",
       dates: "",
-      location: "",
       events: [],
     });
     setIsAddingCity(true);
@@ -189,14 +188,6 @@ export default function AdminProgram() {
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium">Lieu</label>
-                    <Input
-                      value={editingCity?.location || ""}
-                      onChange={(e) => setEditingCity({ ...editingCity!, location: e.target.value } as any)}
-                      placeholder="Ex: Parc des Sports"
-                    />
-                  </div>
-                  <div>
                     <label className="text-sm font-medium">Dates</label>
                     <Input
                       value={editingCity?.dates || ""}
@@ -242,7 +233,7 @@ export default function AdminProgram() {
                       <CardContent className="flex items-center justify-between p-6">
                         <div>
                           <h3 className="text-xl font-bold">{program.city}</h3>
-                          <p className="text-foreground/70">{program.dates} • {program.location}</p>
+                          <p className="text-foreground/70">{program.dates}</p>
                         </div>
                         <div className="flex gap-2">
                           <Button variant="outline" size="sm" onClick={() => { setEditingCity(program); setIsAddingCity(false); }}>

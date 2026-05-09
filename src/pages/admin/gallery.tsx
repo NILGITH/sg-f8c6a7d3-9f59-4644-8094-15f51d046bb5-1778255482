@@ -4,329 +4,133 @@ import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Trash2, Download, Upload, Image as ImageIcon, X } from "lucide-react";
-import { useContentManager } from "@/hooks/useContentManager";
+import { Plus, Trash2, Upload, Image as ImageIcon, X } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import Image from "next/image";
-
-interface GalleryImage {
-  id: string;
-  src: string;
-  alt: string;
-  span: string;
-}
-
-interface GalleryData {
-  images: GalleryImage[];
-}
+import { galleryService, type GalleryItem } from "@/services/galleryService";
 
 export default function AdminGallery() {
   const router = useRouter();
-  const { data, setData, exportData, importData } = useContentManager<GalleryData>("gallery", { images: [] });
-  const [newImage, setNewImage] = useState({ src: "", alt: "", span: "col-span-1 row-span-1" });
+  const [images, setImages] = useState<GalleryItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [newImage, setNewImage] = useState({ image: "", caption: "" });
   const [isUploading, setIsUploading] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
 
   useEffect(() => {
     const isAuth = localStorage.getItem("festival_admin_auth");
     if (!isAuth) {
       router.push("/admin/login");
+    } else {
+      loadGallery();
     }
   }, [router]);
+
+  const loadGallery = async () => {
+    try {
+      const data = await galleryService.getAll();
+      setImages(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    if (!file.type.startsWith("image/")) {
-      alert("Veuillez sélectionner une image");
-      return;
-    }
-
-    setSelectedFile(file);
+    setIsUploading(true);
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreviewUrl(reader.result as string);
+      setIsUploading(false);
     };
     reader.readAsDataURL(file);
   };
 
-  const handleUploadImage = () => {
-    if (!selectedFile || !newImage.alt || !previewUrl) {
-      alert("Veuillez sélectionner une image et remplir la description");
+  const handleUploadImage = async () => {
+    if (!previewUrl && !newImage.image) {
+      alert("Veuillez fournir une image");
       return;
     }
-
-    setIsUploading(true);
-
-    const image: GalleryImage = {
-      id: Date.now().toString(),
-      src: previewUrl, // Base64 image
-      alt: newImage.alt,
-      span: newImage.span,
-    };
-
-    setData({
-      images: [...data.images, image],
-    });
-
-    // Reset form
-    setNewImage({ src: "", alt: "", span: "col-span-1 row-span-1" });
-    setSelectedFile(null);
-    setPreviewUrl("");
-    setIsUploading(false);
-  };
-
-  const handleAddImageFromUrl = () => {
-    if (!newImage.src || !newImage.alt) {
-      alert("Veuillez remplir l'URL et la description");
-      return;
-    }
-
-    const image: GalleryImage = {
-      id: Date.now().toString(),
-      ...newImage,
-    };
-
-    setData({
-      images: [...data.images, image],
-    });
-
-    setNewImage({ src: "", alt: "", span: "col-span-1 row-span-1" });
-  };
-
-  const handleAddImage = () => {
-    if (!newImage.src || !newImage.alt) {
-      alert("Veuillez remplir tous les champs");
-      return;
-    }
-
-    const image: GalleryImage = {
-      id: Date.now().toString(),
-      ...newImage,
-    };
-
-    setData({
-      images: [...data.images, image],
-    });
-
-    setNewImage({ src: "", alt: "", span: "col-span-1 row-span-1" });
-  };
-
-  const handleDeleteImage = (id: string) => {
-    if (confirm("Êtes-vous sûr de vouloir supprimer cette image ?")) {
-      setData({
-        images: data.images.filter((img) => img.id !== id),
-      });
+    try {
+      await galleryService.create({
+        image: previewUrl || newImage.image,
+        caption: newImage.caption,
+      } as any);
+      await loadGallery();
+      setNewImage({ image: "", caption: "" });
+      setPreviewUrl("");
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      importData(file);
+  const handleDeleteImage = async (id: string) => {
+    if (confirm("Supprimer cette image ?")) {
+      try {
+        await galleryService.delete(id);
+        await loadGallery();
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
+
+  if (isLoading) return <AdminLayout><div className="p-8">Chargement...</div></AdminLayout>;
 
   return (
     <>
       <SEO title="Gestion de la Galerie - Admin" />
       <AdminLayout>
         <div className="space-y-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="font-serif text-3xl font-bold text-foreground mb-2">
-                Gestion de la Galerie
-              </h1>
-              <p className="text-foreground/70">
-                Gérer les photos du festival
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={exportData}>
-                <Download className="w-4 h-4 mr-2" />
-                Exporter
-              </Button>
-              <label>
-                <Button variant="outline" size="sm" asChild>
-                  <span>
-                    <Upload className="w-4 h-4 mr-2" />
-                    Importer JSON
-                  </span>
-                </Button>
-                <input type="file" accept=".json" onChange={handleImport} className="hidden" />
-              </label>
-            </div>
-          </div>
-
+          <div><h1 className="font-serif text-3xl font-bold mb-2">Gestion de la Galerie</h1></div>
           <Card className="border-2 border-primary">
             <CardContent className="pt-6">
-              <h3 className="font-semibold mb-4">Uploader une nouvelle image</h3>
+              <h3 className="font-semibold mb-4">Ajouter une image</h3>
               <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Option 1 : Upload depuis ordinateur</label>
-                  <label className="block">
-                    <Button variant="outline" className="w-full" asChild>
-                      <span>
-                        <Upload className="w-4 h-4 mr-2" />
-                        Sélectionner une image
-                      </span>
-                    </Button>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileSelect}
-                      className="hidden"
-                    />
-                  </label>
-                  
-                  {previewUrl && (
-                    <div className="mt-4 space-y-4">
-                      <div className="relative aspect-video rounded-lg overflow-hidden bg-muted">
-                        <Image
-                          src={previewUrl}
-                          alt="Preview"
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                      
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="text-sm font-medium">Description (alt)</label>
-                          <Input
-                            value={newImage.alt}
-                            onChange={(e) => setNewImage({ ...newImage, alt: e.target.value })}
-                            placeholder="Description de l'image"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium">Taille</label>
-                          <select
-                            value={newImage.span}
-                            onChange={(e) => setNewImage({ ...newImage, span: e.target.value })}
-                            className="w-full px-3 py-2 border border-input rounded-md"
-                          >
-                            <option value="col-span-1 row-span-1">Normal (1x1)</option>
-                            <option value="col-span-2 row-span-2">Grande (2x2)</option>
-                            <option value="col-span-2 row-span-1">Large (2x1)</option>
-                            <option value="col-span-1 row-span-2">Haute (1x2)</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="flex gap-2">
-                        <Button
-                          onClick={handleUploadImage}
-                          disabled={isUploading}
-                          className="flex-1"
-                        >
-                          <Plus className="w-4 h-4 mr-2" />
-                          {isUploading ? "Upload..." : "Ajouter à la galerie"}
-                        </Button>
-                        <Button
-                          variant="outline"
-                          onClick={() => {
-                            setSelectedFile(null);
-                            setPreviewUrl("");
-                            setNewImage({ src: "", alt: "", span: "col-span-1 row-span-1" });
-                          }}
-                        >
-                          <X className="w-4 h-4" />
-                        </Button>
-                      </div>
+                <div className="flex flex-col md:flex-row gap-4 items-end">
+                  <div className="flex-1 w-full">
+                    <label className="text-sm font-medium mb-1 block">Image (Upload ou URL)</label>
+                    <div className="flex gap-2">
+                      <Input value={newImage.image} onChange={(e) => setNewImage({ ...newImage, image: e.target.value })} placeholder="URL de l'image" />
+                      <label>
+                        <Button variant="outline" asChild><span><Upload className="w-4 h-4 mr-2" /> Upload</span></Button>
+                        <input type="file" accept="image/*" onChange={handleFileSelect} className="hidden" />
+                      </label>
                     </div>
-                  )}
-                </div>
-
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-border" />
                   </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-foreground/50">Ou</span>
+                  <div className="flex-1 w-full">
+                    <label className="text-sm font-medium mb-1 block">Description</label>
+                    <Input value={newImage.caption} onChange={(e) => setNewImage({ ...newImage, caption: e.target.value })} placeholder="Description" />
                   </div>
+                  <Button onClick={handleUploadImage} disabled={isUploading} className="w-full md:w-auto"><Plus className="w-4 h-4 mr-2" /> Ajouter</Button>
                 </div>
-
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Option 2 : URL d'image</label>
-                  <div className="space-y-4">
-                    <Input
-                      value={newImage.src}
-                      onChange={(e) => setNewImage({ ...newImage, src: e.target.value })}
-                      placeholder="/nom-image.jpg ou URL complète"
-                    />
-                    
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-sm font-medium">Description (alt)</label>
-                        <Input
-                          value={newImage.alt}
-                          onChange={(e) => setNewImage({ ...newImage, alt: e.target.value })}
-                          placeholder="Description de l'image"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium">Taille</label>
-                        <select
-                          value={newImage.span}
-                          onChange={(e) => setNewImage({ ...newImage, span: e.target.value })}
-                          className="w-full px-3 py-2 border border-input rounded-md"
-                        >
-                          <option value="col-span-1 row-span-1">Normal (1x1)</option>
-                          <option value="col-span-2 row-span-2">Grande (2x2)</option>
-                          <option value="col-span-2 row-span-1">Large (2x1)</option>
-                          <option value="col-span-1 row-span-2">Haute (1x2)</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <Button onClick={handleAddImageFromUrl} variant="outline" className="w-full">
-                      <Plus className="w-4 h-4 mr-2" />
-                      Ajouter depuis URL
-                    </Button>
+                {previewUrl && (
+                  <div className="relative aspect-video max-w-sm rounded-lg overflow-hidden bg-muted">
+                    <Image src={previewUrl} alt="Preview" fill className="object-cover" />
+                    <Button variant="destructive" size="sm" className="absolute top-2 right-2" onClick={() => setPreviewUrl("")}><X className="w-4 h-4" /></Button>
                   </div>
-                </div>
+                )}
               </div>
             </CardContent>
           </Card>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {data.images.map((image) => (
-              <Card key={image.id} className={`${image.span} relative group`}>
+            {images.map((image) => (
+              <Card key={image.id} className="relative group">
                 <CardContent className="p-0 h-full">
                   <div className="relative aspect-square h-full">
-                    <Image
-                      src={image.src}
-                      alt={image.alt}
-                      fill
-                      className="object-cover rounded-lg"
-                    />
+                    <Image src={image.image || ""} alt={image.caption || ""} fill className="object-cover rounded-lg" />
                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleDeleteImage(image.id)}
-                      >
-                        <Trash2 className="w-4 h-4 mr-2" />
-                        Supprimer
-                      </Button>
+                      <Button variant="destructive" size="sm" onClick={() => handleDeleteImage(image.id)}><Trash2 className="w-4 h-4" /></Button>
                     </div>
                   </div>
-                  <div className="p-2">
-                    <p className="text-xs text-foreground/70 truncate">{image.alt}</p>
-                  </div>
+                  <div className="p-2"><p className="text-xs text-foreground/70 truncate">{image.caption}</p></div>
                 </CardContent>
               </Card>
             ))}
-
-            {data.images.length === 0 && (
-              <div className="col-span-full text-center py-12 text-foreground/50">
-                <ImageIcon className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p>Aucune image dans la galerie</p>
-              </div>
-            )}
           </div>
         </div>
       </AdminLayout>
