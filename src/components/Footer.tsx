@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Facebook, Instagram, Twitter, Mail, Phone, MapPin, Flame } from "lucide-react";
+import Image from "next/image";
+import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
 
 export function Footer() {
   const socialLinks = [
@@ -47,8 +48,15 @@ export function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <Flame className="w-8 h-8 text-primary" />
+            <div className="flex items-center gap-3">
+              <div className="relative w-12 h-12">
+                <Image
+                  src="/logo-festival.jpg"
+                  alt="Festival des Grillades"
+                  fill
+                  className="object-contain"
+                />
+              </div>
               <span className="font-serif text-xl font-bold">Festival des Grillades</span>
             </div>
             <p className="text-background/70 leading-relaxed">
@@ -64,7 +72,7 @@ export function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 bg-background/10 hover:bg-primary rounded-full flex items-center justify-center transition-colors"
+                    className="w-10 h-10 bg-background/10 hover:bg-primary rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
                     aria-label={social.label}
                   >
                     <Icon className="w-5 h-5" />
@@ -76,13 +84,13 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-serif text-lg font-bold mb-4">Liens Rapides</h3>
+            <h3 className="font-serif text-lg font-bold mb-4 text-background">Liens Rapides</h3>
             <ul className="space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={index}>
                   <Link
                     href={link.href}
-                    className="text-background/70 hover:text-primary transition-colors"
+                    className="text-background/70 hover:text-primary transition-colors duration-300"
                   >
                     {link.label}
                   </Link>
@@ -93,7 +101,7 @@ export function Footer() {
 
           {/* Offices - Spanning 2 columns on large screens */}
           <div className="lg:col-span-2">
-            <h3 className="font-serif text-lg font-bold mb-4">Nos Bureaux</h3>
+            <h3 className="font-serif text-lg font-bold mb-4 text-background">Nos Bureaux</h3>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {offices.map((office, index) => (
                 <div key={index} className="space-y-2">
@@ -103,7 +111,7 @@ export function Footer() {
                       <p className="font-semibold text-background">
                         {office.city}
                         {office.label.includes("Maison Mère") && (
-                          <span className="ml-2 text-xs bg-primary text-white px-2 py-0.5 rounded">
+                          <span className="ml-2 text-xs bg-primary text-white px-2 py-0.5 rounded-full">
                             Siège
                           </span>
                         )}
@@ -133,7 +141,7 @@ export function Footer() {
         {/* Newsletter Section */}
         <div className="mb-12 p-6 bg-background/5 rounded-2xl border border-background/10">
           <div className="max-w-2xl mx-auto text-center">
-            <h3 className="font-serif text-lg font-bold mb-2">Restez Informé</h3>
+            <h3 className="font-serif text-lg font-bold mb-2 text-background">Restez Informé</h3>
             <p className="text-background/70 mb-4 text-sm">
               Recevez les dernières nouvelles et annonces des prochaines éditions
             </p>
@@ -141,9 +149,9 @@ export function Footer() {
               <input
                 type="email"
                 placeholder="Votre email"
-                className="flex-1 px-4 py-2 rounded-lg bg-background/10 border border-background/20 text-background placeholder:text-background/50 focus:outline-none focus:border-primary"
+                className="flex-1 px-4 py-2 rounded-lg bg-background/10 border border-background/20 text-background placeholder:text-background/50 focus:outline-none focus:border-primary transition-colors"
               />
-              <button className="px-6 py-2 bg-primary hover:bg-primary/90 rounded-lg font-semibold transition-colors">
+              <button className="px-6 py-2 bg-primary hover:bg-primary/90 rounded-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg">
                 S'inscrire
               </button>
             </div>
@@ -154,10 +162,10 @@ export function Footer() {
         <div className="pt-8 border-t border-background/20 flex flex-col md:flex-row justify-between items-center gap-4 text-background/60 text-sm">
           <p>© {new Date().getFullYear()} Festival des Grillades. Abidjan, Côte d'Ivoire. Tous droits réservés.</p>
           <div className="flex gap-6">
-            <Link href="#" className="hover:text-primary transition-colors">
+            <Link href="#" className="hover:text-primary transition-colors duration-300">
               Mentions légales
             </Link>
-            <Link href="#" className="hover:text-primary transition-colors">
+            <Link href="#" className="hover:text-primary transition-colors duration-300">
               Politique de confidentialité
             </Link>
           </div>
