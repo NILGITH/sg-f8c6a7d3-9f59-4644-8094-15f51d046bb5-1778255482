@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocalStorage } from "./useLocalStorage";
 
-type ContentType = "program" | "gallery" | "reservations" | "blog" | "partners" | "editions";
+type ContentType = "program" | "gallery" | "reservations" | "blog" | "partners" | "editions" | "slider";
 
 export function useContentManager<T>(contentType: ContentType, defaultData: T) {
   const storageKey = `festival_${contentType}`;

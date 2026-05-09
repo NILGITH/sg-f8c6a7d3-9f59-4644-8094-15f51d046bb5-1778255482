@@ -1,6 +1,6 @@
 import { SEO } from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
-import { Hero } from "@/components/Hero";
+import { HeroSlider } from "@/components/HeroSlider";
 import { About } from "@/components/About";
 import { Editions } from "@/components/Editions";
 import { Program } from "@/components/Program";
@@ -19,7 +19,7 @@ export default function Home() {
       />
       <Navigation />
       <main>
-        <Hero />
+        <HeroSlider />
         <About />
         <Editions />
         <Program />

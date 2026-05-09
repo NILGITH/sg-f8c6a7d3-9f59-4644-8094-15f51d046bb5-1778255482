@@ -1,0 +1,37 @@
+{
+  "slides": [
+    {
+      "id": "1",
+      "title": "Festival des Grillades",
+      "subtitle": "D'Abidjan au Monde",
+      "description": "Née à Abidjan, célébré dans les capitales africaines et au-delà",
+      "image": "/641655009_122170459016861582_5624134569926200889_n.jpg",
+      "ctaText": "Découvrir nos éditions",
+      "ctaLink": "#editions",
+      "order": 1,
+      "isActive": true
+    },
+    {
+      "id": "2",
+      "title": "Une Expérience Gastronomique Unique",
+      "subtitle": "Tradition & Innovation",
+      "description": "Les plus grands maîtres grilleurs d'Afrique et du monde réunis",
+      "image": "/641501809_122170458476861582_102146802286182265_n.jpg",
+      "ctaText": "Voir le programme",
+      "ctaLink": "#program",
+      "order": 2,
+      "isActive": true
+    },
+    {
+      "id": "3",
+      "title": "Rejoignez-nous",
+      "subtitle": "Prochaine Édition",
+      "description": "Abidjan - Août 2026",
+      "image": "/festival-poster.png",
+      "ctaText": "Réserver ma place",
+      "ctaLink": "/contact",
+      "order": 3,
+      "isActive": true
+    }
+  ]
+}
