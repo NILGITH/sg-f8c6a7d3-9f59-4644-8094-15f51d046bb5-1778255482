@@ -81,7 +81,7 @@ export function Gallery() {
           {/* Masonry Gallery Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-[200px] gap-3 md:gap-4">
             {images.map((image, index) => {
-              const spanClasses = image.span || "col-span-1 row-span-1";
+              const spanClasses = "col-span-1 row-span-1";
               
               return (
                 <div
@@ -91,7 +91,7 @@ export function Gallery() {
                 >
                   <Image
                     src={image.image}
-                    alt={image.title}
+                    alt={image.caption || "Image de galerie"}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-125"
                   />
@@ -100,7 +100,7 @@ export function Gallery() {
 
                   <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-6 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
                     <p className="text-white text-sm md:text-base font-medium line-clamp-2 mb-2">
-                      {image.title}
+                      {image.caption}
                     </p>
                     <div className="flex items-center gap-2 text-white/80 text-xs md:text-sm">
                       <ZoomIn className="w-4 h-4" />
@@ -175,7 +175,7 @@ export function Gallery() {
             <div className="relative w-full h-full max-w-6xl max-h-[90vh] animate-scale-in">
               <Image
                 src={images[selectedImage].image}
-                alt={images[selectedImage].title}
+                alt={images[selectedImage].caption || "Image de galerie"}
                 fill
                 className="object-contain"
                 priority
@@ -183,7 +183,7 @@ export function Gallery() {
               
               <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-foreground/90 to-transparent">
                 <p className="text-white text-center text-lg font-medium">
-                  {images[selectedImage].title}
+                  {images[selectedImage].caption}
                 </p>
                 <p className="text-white/70 text-center text-sm mt-2">
                   {selectedImage + 1} / {images.length}
